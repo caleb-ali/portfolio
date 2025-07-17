@@ -1,74 +1,98 @@
 import styled, { createGlobalStyle } from "styled-components";
 import "inter-ui/inter.css";
+import profilePicture from "./images/calebali.png";
+import Github from "./images/github-brands.svg";
+import Linkedin from "./images/linkedin-brands.svg";
+import Envelope from "./images/envelope-solid.svg";
+import Dot from "./images/dot.png";
+import Arrow from "./images/right-up.png";
 
 // Global styles to remove default margins
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
+    background-color: #151515;
   }
 `;
+
+// Add this at the top with your other imports
+const orangePalette = {
+  primary: "#FF7A00",
+  secondary: "#FF9A42",
+  accent: "#FF5E00",
+};
 
 const AppContainer = styled.div`
   font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #151515;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+`;
+
+const Container = styled.div`
   display: flex;
   flex-direction: row;
-  background-color: #151515;
-  height: 100vh;
+  max-width: 1560px;
   width: 100%;
   @media (max-width: 1000px) {
     flex-direction: column;
+    min-height: 100vh; // Ensure container takes full height
   }
 `;
 
-const Container = styled.div``;
-
 const Left = styled.div`
-  position: fixed;
-  width: 50%;
-  height: 100vh;
+  width: 45%;
   background-color: #151515;
+  position: fixed;
   @media (max-width: 1000px) {
-    position: static; // Remove fixed positioning on smaller screens
-    width: 100%; // Full width on smaller screens
+    width: 100%;
+    position: static; // Ensure normal document flow
   }
 `;
 
 const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 6rem;
-`;
-
-const RightContent = styled.div``;
-
-const Right = styled.div`
-  position: relative;
-  margin-left: 50%;
-  height: 100vh;
-  overflow-y: auto; // Enable vertical scrolling
-  width: 50%;
-  background-color: #151515;
+  gap: 4rem;
+  margin: 1rem;
+  @media (min-width: 1000px) {
+    margin: 2rem;
+  }
+  @media (min-width: 1240px) {
+    margin: 6rem;
+  }
   @media (max-width: 1000px) {
-    margin-left: 0; // Remove margin on smaller screens
-    width: 100%; // Full width on smaller screens
+    padding-bottom: 2rem; // Add space before right content
   }
 `;
 
-const LargeText = styled.h1`
-  line-height: 1.25;
-  font-weight: 700;
-  font-size: 60px;
-  margin: 0;
-  color: #ffffff;
+const Right = styled.div`
+  width: 55%;
+  background-color: #151515;
+  position: relative;
+  margin-left: 45%;
+  @media (max-width: 1000px) {
+    width: 100%;
+    position: static; // Ensure normal document flow
+    margin-left: 0;
+  }
 `;
 
-const LargeText2 = styled.h1`
-  line-height: 1.25;
-  font-weight: 700;
-  font-size: 40px;
-  margin: 0;
-  color: #ffffff;
+const RightContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin: 1rem;
+  @media (min-width: 1000px) {
+    margin: 2rem;
+  }
+  @media (min-width: 1240px) {
+    margin: 6rem;
+  }
 `;
 
 const MediumTextBold = styled.h2`
@@ -82,33 +106,196 @@ const MediumTextBold = styled.h2`
 const SmallText = styled.p`
   font-size: 18px;
   color: #949495;
+  line-height: 1.5;
+  margin: 0;
+`;
+
+const CardHeader = styled.p`
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 600;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px; /* Add gap between elements */
+  img:last-of-type {
+    /* Arrow image */
+    transition: all 0.3s ease;
+    transform: translateY(3px); /* Initial position - slightly lower */
+  }
+`;
+
+const CardText = styled.p`
+  font-size: 14px;
+  color: #949495;
+  line-height: 1.5;
+  margin: 0;
+`;
+
+const CardText2 = styled.p`
+  font-size: 16px;
+  color: #949495;
+  line-height: 1.5;
+  margin: 0;
+`;
+
+const SmallTextWhite = styled.p`
+  font-size: 16px;
+  color: #ffffff;
+  margin: 0;
 `;
 
 const SmallTextBold = styled.p`
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 3px;
   text-transform: uppercase;
+  margin: 0;
 `;
 
 const Top = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 2rem;
 `;
 
 const Middle = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 4rem;
+  gap: 2rem;
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
 
-const Bottom = styled.div``;
+const Bottom = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  @media (min-width: 1001px) {
+    position: fixed;
+    bottom: 6rem;
+  }
+  @media (max-width: 1000px) {
+    position: static; // Normal flow on mobile
+    margin: 2rem 0;
+  }
+  @media (max-width: 450px) {
+    gap: 0.5rem;
+  }
+`;
 
-const Header = styled.div``;
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
 const Description = styled.div``;
+
+const StyledSVG = styled.img`
+  width: 16px;
+  height: auto;
+`;
+
+const StyledSVG2 = styled.img`
+  width: 14px;
+  height: auto;
+`;
+
+const ProfilePic = styled.div``;
+
+const About = styled.div``;
+
+const Articles = styled.div``;
+
+const Experience = styled.div`
+  margin-top: 5rem;
+`;
+
+const Projects = styled.div``;
+
+const ExperienceCard = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  color: #ffffff;
+
+  transition: all 0.3s ease;
+  transform-origin: center;
+
+  &:hover {
+    background-color: #202022;
+    transform: scale(1.05); /* 5% scale up */
+    cursor: pointer;
+
+    ${CardHeader} {
+      color: ${orangePalette.secondary};
+
+      img:first-of-type {
+        /* Dot image */
+        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+      }
+
+      img:last-of-type {
+        /* Arrow image */
+        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+        transform: translateY(-2px) translateX(2px);
+      }
+    }
+  }
+`;
+
+const CardLeft = styled.div`
+  width: 30%;
+`;
+
+const CardRight = styled.div`
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const CardRightTop = styled.div``;
+const CardRightMiddle = styled.div``;
+
+const CardRightBottom = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
+// Then update these components:
+const LargeText = styled.h1`
+  line-height: 1.25;
+  font-weight: 700;
+  font-size: 60px;
+  margin: 0;
+  color: #ffffff; /* Changed from orange to white */
+  @media (max-width: 430px) {
+    font-size: 50px;
+  }
+`;
+
+const OrangeText = styled.span`
+  color: ${orangePalette.secondary};
+`;
+
+const LargeText2 = styled.h1`
+  line-height: 1.25;
+  font-weight: 700;
+  font-size: 25px;
+  margin: 0;
+  color: #ffffff;
+`;
 
 const Section = styled.div`
   display: flex;
@@ -118,24 +305,79 @@ const Section = styled.div`
   transition: all 0.3s ease;
 
   &:hover {
-    color: #ffffff;
+    color: ${orangePalette.secondary};
     font-weight: 600;
   }
 
   &:hover::before {
-    width: 50px;
-    background-color: #ffffff;
+    width: 60px;
+    background-color: ${orangePalette.secondary};
   }
 
   &::before {
-    content: '';
+    content: "";
     display: inline-block;
-    width: 20px;
+    width: 30px;
     height: 1px;
     background-color: #949495;
     margin-right: 10px;
     transition: all 0.3s ease;
   }
+`;
+
+const Tools = styled.div`
+  border-radius: 15px;
+  background-color: rgba(255, 122, 0, 0.05); /* Orange with 10% opacity */
+  color: ${orangePalette.secondary};
+  padding: 0 12px;
+  font-size: 12px;
+  line-height: 30px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+`;
+
+const Profile = styled.img`
+  width: 70px;
+  height: auto;
+  border-radius: 50%;
+  border: 2px solid ${orangePalette.secondary};
+  padding: 2px;
+`;
+
+const SocialLink = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #ffffff;
+    /* transition: color 0.7s ease-in-out; */
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: ${orangePalette.secondary};
+
+      p {
+        color: inherit;
+      }
+      img {
+        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+      }
+    }
+  }
+`;
+
+const DotImage = styled.img`
+  width: 14px;
+  height: 14px;
 `;
 
 const App = () => {
@@ -148,8 +390,10 @@ const App = () => {
             <LeftContent>
               <Top>
                 <Header>
-                  <LargeText>Hi. I'm Caleb</LargeText>
-                  <LargeText2> Frontend Developer</LargeText2>
+                  <LargeText>
+                    <OrangeText>Hi,</OrangeText> I'm Caleb
+                  </LargeText>
+                  <LargeText2>Front End Developer</LargeText2>
                 </Header>
                 <Description>
                   <SmallText>
@@ -158,16 +402,151 @@ const App = () => {
                 </Description>
               </Top>
               <Middle>
-                <Section>About</Section>
-                <Section>Skills</Section>
-                <Section>Experience</Section>
-                <Section>Projects</Section>
+                <Section>
+                  <SmallTextBold>ABOUT</SmallTextBold>
+                </Section>
+                <Section>
+                  <SmallTextBold>EXPERIENCE</SmallTextBold>
+                </Section>
+                <Section>
+                  <SmallTextBold>PROJECTS</SmallTextBold>
+                </Section>
+                <Section>
+                  <SmallTextBold>ARTICLES</SmallTextBold>
+                </Section>
               </Middle>
-              <Bottom></Bottom>
+              <Bottom>
+                <ProfilePic>
+                  <Profile src={profilePicture} />
+                </ProfilePic>
+                <SocialLink>
+                  <a
+                    href="https://github.com/caleb-ali"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <StyledSVG src={Github} alt="Github" />
+                    <SmallTextWhite>Github</SmallTextWhite>
+                  </a>
+                </SocialLink>
+                <SocialLink>
+                  <a
+                    href="https://linkedin.com/in/caleb-ali"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <StyledSVG src={Linkedin} alt="Linkedin" />
+                    <SmallTextWhite>Linkedin</SmallTextWhite>
+                  </a>
+                </SocialLink>
+                <SocialLink>
+                  <a
+                    href="mailto:calebali413@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <StyledSVG src={Envelope} alt="Mail" />
+                    <SmallTextWhite>Mail</SmallTextWhite>
+                  </a>
+                </SocialLink>
+              </Bottom>
             </LeftContent>
           </Left>
           <Right>
-            <RightContent></RightContent>
+            <RightContent>
+              <About>
+                <SmallText>
+                  I'm a frontend developer passionate about building responsive,
+                  user-centered interfaces that merge elegant design with solid
+                  engineering. I specialize in creating seamless experiences
+                  across all devices, focusing on clean, maintainable code that
+                  supports both performance and usability. I thrive in
+                  collaborative environments where thoughtful design meets
+                  functional execution.
+                  <br />
+                  <br />
+                  Currently, I’m a Frontend Developer at Evendy, where I focus
+                  on building and maintaining a role-based access control
+                  dashboard and vendor marketplace. I work on crafting
+                  responsive and secure user interfaces that ensure seamless
+                  experiences across devices, while collaborating closely with
+                  backend teams to integrate frontend logic and maintain
+                  efficient user sessions.
+                  <br />
+                  <br />
+                  In my spare time, I’m usually learning something new, watching
+                  movies or taking a walk{" "}
+                </SmallText>
+              </About>
+
+              <Experience>
+                <ExperienceCard>
+                  <CardLeft>
+                    <CardText>APRIL, 2024 - PRESENT</CardText>
+                  </CardLeft>
+                  <CardRight>
+                    <CardRightTop>
+                      <CardHeader>
+                        Frontend Developer
+                        <DotImage src={Dot} />
+                        Evendy
+                        <img src={Arrow} alt="arrow" />
+                      </CardHeader>
+                    </CardRightTop>
+                    <CardRightMiddle>
+                      <CardText2>
+                        Build and maintain a role-based access control dashboard
+                        and responsive web interfaces. Collaborate with backend
+                        engineers to implement secure API integrations and
+                        real-time data handling. Translate Figma designs into
+                        production-ready UIs and advocate for performance and
+                        design consistency across web and mobile platforms.
+                      </CardText2>
+                    </CardRightMiddle>
+                    <CardRightBottom>
+                      <Tools>TypeScript</Tools>
+                      <Tools>React</Tools>
+                      <Tools>React Query</Tools>
+                      <Tools>Styled Components</Tools>
+                      <Tools>Ant Design</Tools>
+                      <Tools>Recharts</Tools>
+                    </CardRightBottom>
+                  </CardRight>
+                </ExperienceCard>
+                <ExperienceCard>
+                  <CardLeft>
+                    <CardText>MAY, 2023 - NOV, 2023</CardText>
+                  </CardLeft>
+                  <CardRight>
+                    <CardRightTop>
+                      <CardHeader>
+                        Frontend Developer intern <DotImage src={Dot} /> ThriveAgric  <img src={Arrow} alt="arrow" />
+                      </CardHeader>
+                    </CardRightTop>
+                    <CardRightMiddle>
+                      <CardText2>
+                        Led a cross-functional team in building a user-focused
+                        React.js web app, streamlining project delivery through
+                        effective version control and collaboration. Integrated
+                        frontend with backend services, improved cross-browser
+                        compatibility, and optimized performance for
+                        responsiveness across devices.
+                      </CardText2>
+                    </CardRightMiddle>
+                    <CardRightBottom>
+                      <Tools>HTML</Tools>
+                      <Tools>CSS</Tools>
+                      <Tools>React</Tools>
+                      <Tools>JavaScript</Tools>
+                      <Tools>Tailwind CSS</Tools>
+                      <Tools>React Native</Tools>
+                    </CardRightBottom>
+                  </CardRight>
+                </ExperienceCard>
+              </Experience>
+              <Projects></Projects>
+              <Articles></Articles>
+            </RightContent>
           </Right>
         </Container>
       </AppContainer>
