@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import "inter-ui/inter.css";
 import profilePicture from "./images/calebali.png";
@@ -95,13 +96,13 @@ const RightContent = styled.div`
   }
 `;
 
-const MediumTextBold = styled.h2`
-  line-height: 1.25;
-  font-weight: 600;
-  font-size: 22px;
-  margin: 0;
-  color: #ffffff;
-`;
+// const MediumTextBold = styled.h2`
+//   line-height: 1.25;
+//   font-weight: 600;
+//   font-size: 22px;
+//   margin: 0;
+//   color: #ffffff;
+// `;
 
 const SmallText = styled.p`
   font-size: 18px;
@@ -111,11 +112,6 @@ const SmallText = styled.p`
 `;
 
 const CardHeader = styled.p`
-  font-size: 16px;
-  color: #ffffff;
-  line-height: 1.5;
-  margin: 0;
-  font-weight: 600;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -200,22 +196,107 @@ const StyledSVG = styled.img`
   height: auto;
 `;
 
-const StyledSVG2 = styled.img`
-  width: 14px;
-  height: auto;
-`;
-
 const ProfilePic = styled.div``;
 
 const About = styled.div``;
 
 const Articles = styled.div``;
 
+const ArticlesCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  padding: 1rem 2rem;
+  margin-left: -2rem;
+  /* border-radius: 5px; */
+  color: #ffffff;
+
+  transition: all 0.3s ease;
+  transform-origin: center;
+
+  &:hover {
+    background-color: #202022;
+    transform: scale(1.05); /* 5% scale up */
+    cursor: pointer;
+  }
+`;
+
 const Experience = styled.div`
   margin-top: 5rem;
 `;
 
-const Projects = styled.div``;
+const Projects = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const ProjectText1 = styled.p`
+  font-size: 16px;
+  color: #ffffff;
+  margin: 0;
+  font-weight: 600;
+`;
+
+const ProjectText2 = styled.p`
+  font-size: 14px;
+  color: #ffffff;
+  margin: 0;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const ProjectText3 = styled.p`
+  font-size: 14px;
+  color: #949495;
+  line-height: 1.5;
+  margin: 0;
+`;
+
+const ProjectText4 = styled.p`
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px; /* Add gap between elements */
+  img:last-of-type {
+    /* Arrow image */
+    transition: all 0.3s ease;
+    transform: translateY(3px); /* Initial position - slightly lower */
+  }
+`;
+
+const ProjectsCard = styled.div<ProjectsCardProps>`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  color: #ffffff;
+  background-color: #202022;
+  transition: all 0.3s ease;
+  transform-origin: center;
+  opacity: ${(props) => (props.$ishovered === "true" || props.$ishovered === null ? 1 : 0.5)};
+
+  &:hover {
+    background-color: #202022;
+    transform: scale(1.11);
+    cursor: pointer;
+    opacity: 1;
+
+    ${ProjectText4} {
+      color: ${orangePalette.secondary};
+
+      img:last-of-type {
+        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+        transform: translateY(-2px) translateX(2px);
+      }
+    }
+  }
+`;
 
 const ExperienceCard = styled.div`
   display: flex;
@@ -223,7 +304,8 @@ const ExperienceCard = styled.div`
   gap: 2rem;
   margin-bottom: 4rem;
   padding: 1rem 2rem;
-  border-radius: 5px;
+  margin-left: -2rem;
+  /* border-radius: 5px; */
   color: #ffffff;
 
   transition: all 0.3s ease;
@@ -245,6 +327,27 @@ const ExperienceCard = styled.div`
 
       img:last-of-type {
         /* Arrow image */
+        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+        transform: translateY(-2px) translateX(2px);
+      }
+    }
+  }
+`;
+
+const ViewResume = styled.div`
+  color: #ffffff;
+
+  transition: all 0.3s ease;
+  transform-origin: center;
+
+  &:hover {
+    cursor: pointer;
+
+    ${CardHeader} {
+      color: ${orangePalette.secondary};
+
+      img {
         filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
           saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
         transform: translateY(-2px) translateX(2px);
@@ -380,7 +483,13 @@ const DotImage = styled.img`
   height: 14px;
 `;
 
+interface ProjectsCardProps {
+  $ishovered?: string | null;
+}
+
 const App = () => {
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
   return (
     <>
       <GlobalStyle />
@@ -520,7 +629,8 @@ const App = () => {
                   <CardRight>
                     <CardRightTop>
                       <CardHeader>
-                        Frontend Developer intern <DotImage src={Dot} /> ThriveAgric  <img src={Arrow} alt="arrow" />
+                        Frontend Developer intern <DotImage src={Dot} />{" "}
+                        ThriveAgric <img src={Arrow} alt="arrow" />
                       </CardHeader>
                     </CardRightTop>
                     <CardRightMiddle>
@@ -543,9 +653,72 @@ const App = () => {
                     </CardRightBottom>
                   </CardRight>
                 </ExperienceCard>
+                <ViewResume>
+                  <CardHeader>
+                    View Full Résumé
+                    <img src={Arrow} alt="arrow" />
+                  </CardHeader>
+                </ViewResume>
               </Experience>
-              <Projects></Projects>
-              <Articles></Articles>
+
+              <Projects>
+                <ProjectsCard
+                  onMouseEnter={() => setHoveredCard(1)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                  $ishovered={
+                    hoveredCard === null || hoveredCard === 1 ? "true" : "false"
+                  }
+                >
+                  <ProjectText1>Rekruit</ProjectText1>
+                  <ProjectText2>
+                    Javascript <DotImage src={Dot} /> React{" "}
+                    <DotImage src={Dot} /> Tailwind css
+                  </ProjectText2>
+                  <ProjectText3>A recruitment management platform</ProjectText3>
+                  <ProjectText4>
+                    View Project
+                    <img src={Arrow} alt="arrow" />
+                  </ProjectText4>
+                </ProjectsCard>
+                <ProjectsCard
+                  onMouseEnter={() => setHoveredCard(2)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                  $ishovered={
+                    hoveredCard === null || hoveredCard === 2 ? "true" : "false"
+                  }
+                >
+                  <ProjectText1>Portfolio Page</ProjectText1>
+                  <ProjectText2>
+                    Javascript <DotImage src={Dot} /> React{" "}
+                    <DotImage src={Dot} /> Tailwind css
+                  </ProjectText2>
+                  <ProjectText3>My previous portfolio page</ProjectText3>
+                  <ProjectText4>
+                    View Project
+                    <img src={Arrow} alt="arrow" />
+                  </ProjectText4>
+                </ProjectsCard>
+                <ProjectsCard
+                  onMouseEnter={() => setHoveredCard(3)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                  $ishovered={
+                    hoveredCard === null || hoveredCard === 3 ? "true" : "false"
+                  }
+                >
+                  <ProjectText1>Mobile Task Manager</ProjectText1>
+                  <ProjectText2>React Native</ProjectText2>
+                  <ProjectText3>
+                    A simple mobile task manager built using react native
+                  </ProjectText3>
+                  <ProjectText4>
+                    View Project
+                    <img src={Arrow} alt="arrow" />
+                  </ProjectText4>
+                </ProjectsCard>
+              </Projects>
+              <Articles>
+                <ArticlesCard></ArticlesCard>
+              </Articles>
             </RightContent>
           </Right>
         </Container>
