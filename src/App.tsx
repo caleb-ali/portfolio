@@ -96,14 +96,6 @@ const RightContent = styled.div`
   }
 `;
 
-// const MediumTextBold = styled.h2`
-//   line-height: 1.25;
-//   font-weight: 600;
-//   font-size: 22px;
-//   margin: 0;
-//   color: #ffffff;
-// `;
-
 const SmallText = styled.p`
   font-size: 18px;
   color: #949495;
@@ -200,27 +192,30 @@ const ProfilePic = styled.div``;
 
 const About = styled.div``;
 
-const Articles = styled.div``;
+const Articles = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+`;
 
-const ArticlesCard = styled.div`
+const ArticlesColoum1 = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 4rem;
-  padding: 1rem 2rem;
-  margin-left: -2rem;
-  /* border-radius: 5px; */
-  color: #ffffff;
-
-  transition: all 0.3s ease;
-  transform-origin: center;
-
-  &:hover {
-    background-color: #202022;
-    transform: scale(1.05); /* 5% scale up */
-    cursor: pointer;
-  }
+  gap: 0.5rem;
+  width: 50%;
 `;
+
+const ArticlesColoum2 = styled.div`
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 50%;
+`;
+
+const ArticlesTop = styled.div``;
+
+const ArticlesBottom = styled.div``;
 
 const Experience = styled.div`
   margin-top: 5rem;
@@ -254,6 +249,16 @@ const ProjectText3 = styled.p`
   color: #949495;
   line-height: 1.5;
   margin: 0;
+
+  a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 15px;
+    &:hover {
+      color: ${orangePalette.secondary};
+    }
+  }
 `;
 
 const ProjectText4 = styled.p`
@@ -265,20 +270,44 @@ const ProjectText4 = styled.p`
   img:last-of-type {
     /* Arrow image */
     transition: all 0.3s ease;
-    transform: translateY(3px); /* Initial position - slightly lower */
+    transform: translateY(2px); /* Initial position - slightly lower */
+  }
+`;
+
+const ArticlesCard = styled.div<ArticleCardProps>`
+  width: calc(50%-0.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding: 1rem 2rem;
+  background-color: #202022;
+  color: #ffffff;
+  opacity: ${(props) =>
+    props.$ishoveredArticle === "true" || props.$ishoveredArticle === null
+      ? 1
+      : 0.5};
+  transition: all 0.3s ease;
+  transform-origin: center;
+
+  &:hover {
+    background-color: #202022;
+    transform: scale(1.11); // Slightly reduced scale for better fit
+    cursor: pointer;
+    opacity: 1;
   }
 `;
 
 const ProjectsCard = styled.div<ProjectsCardProps>`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 1rem 2rem;
   color: #ffffff;
   background-color: #202022;
   transition: all 0.3s ease;
   transform-origin: center;
-  opacity: ${(props) => (props.$ishovered === "true" || props.$ishovered === null ? 1 : 0.5)};
+  opacity: ${(props) =>
+    props.$ishovered === "true" || props.$ishovered === null ? 1 : 0.5};
 
   &:hover {
     background-color: #202022;
@@ -483,12 +512,22 @@ const DotImage = styled.img`
   height: 14px;
 `;
 
+const Footer = styled.div`
+  margin-top: 8rem;
+  margin-bottom: 2rem;
+`;
+
 interface ProjectsCardProps {
   $ishovered?: string | null;
 }
 
+interface ArticleCardProps {
+  $ishoveredArticle?: string | null;
+}
+
 const App = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [hoveredArticle, setHoveredArticle] = useState<number | null>(null);
 
   return (
     <>
@@ -589,6 +628,12 @@ const App = () => {
               </About>
 
               <Experience>
+              <a
+                  href="https://www.evendy.co/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
                 <ExperienceCard>
                   <CardLeft>
                     <CardText>APRIL, 2024 - PRESENT</CardText>
@@ -622,6 +667,13 @@ const App = () => {
                     </CardRightBottom>
                   </CardRight>
                 </ExperienceCard>
+                </a>
+                <a
+                  href="https://thriveagric.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
                 <ExperienceCard>
                   <CardLeft>
                     <CardText>MAY, 2023 - NOV, 2023</CardText>
@@ -653,6 +705,7 @@ const App = () => {
                     </CardRightBottom>
                   </CardRight>
                 </ExperienceCard>
+                </a>
                 <ViewResume>
                   <CardHeader>
                     View Full Résumé
@@ -662,6 +715,12 @@ const App = () => {
               </Experience>
 
               <Projects>
+              <a
+                  href="https://calebali.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
                 <ProjectsCard
                   onMouseEnter={() => setHoveredCard(1)}
                   onMouseLeave={() => setHoveredCard(null)}
@@ -680,24 +739,40 @@ const App = () => {
                     <img src={Arrow} alt="arrow" />
                   </ProjectText4>
                 </ProjectsCard>
-                <ProjectsCard
-                  onMouseEnter={() => setHoveredCard(2)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  $ishovered={
-                    hoveredCard === null || hoveredCard === 2 ? "true" : "false"
-                  }
+                </a>
+                <a
+                  href="https://calebali.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
                 >
-                  <ProjectText1>Portfolio Page</ProjectText1>
-                  <ProjectText2>
-                    Javascript <DotImage src={Dot} /> React{" "}
-                    <DotImage src={Dot} /> Tailwind css
-                  </ProjectText2>
-                  <ProjectText3>My previous portfolio page</ProjectText3>
-                  <ProjectText4>
-                    View Project
-                    <img src={Arrow} alt="arrow" />
-                  </ProjectText4>
-                </ProjectsCard>
+                  <ProjectsCard
+                    onMouseEnter={() => setHoveredCard(2)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    $ishovered={
+                      hoveredCard === null || hoveredCard === 2
+                        ? "true"
+                        : "false"
+                    }
+                  >
+                    <ProjectText1>Portfolio Page</ProjectText1>
+                    <ProjectText2>
+                      Javascript <DotImage src={Dot} /> React{" "}
+                      <DotImage src={Dot} /> Tailwind css
+                    </ProjectText2>
+                    <ProjectText3>My previous portfolio page</ProjectText3>
+                    <ProjectText4>
+                      View Project
+                      <img src={Arrow} alt="arrow" />
+                    </ProjectText4>
+                  </ProjectsCard>
+                </a>
+                <a
+                  href="https://github.com/caleb-ali/mobile-taskManager"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
                 <ProjectsCard
                   onMouseEnter={() => setHoveredCard(3)}
                   onMouseLeave={() => setHoveredCard(null)}
@@ -715,10 +790,143 @@ const App = () => {
                     <img src={Arrow} alt="arrow" />
                   </ProjectText4>
                 </ProjectsCard>
+                </a>
               </Projects>
               <Articles>
-                <ArticlesCard></ArticlesCard>
+                <ArticlesColoum1>
+                <a
+                  href="https://dev.to/calebali/how-to-build-dynamic-charts-in-react-with-recharts-including-edge-cases-3e72"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <ArticlesCard
+                    onMouseEnter={() => setHoveredArticle(1)}
+                    onMouseLeave={() => setHoveredArticle(null)}
+                    $ishoveredArticle={
+                      hoveredArticle === null || hoveredArticle === 1
+                        ? "true"
+                        : "false"
+                    }
+                  >
+                    <ArticlesTop>
+                      <ProjectText2>Frontend</ProjectText2>
+                      <ProjectText3>May 21, 2025</ProjectText3>
+                    </ArticlesTop>
+                    <ArticlesBottom>
+                      <ProjectText2>
+                      How to Build Dynamic Charts in React with Recharts
+                      </ProjectText2>
+                      <ProjectText3>20min read</ProjectText3>
+                    </ArticlesBottom>
+                  </ArticlesCard>
+                  </a>
+
+                  <a
+                  href="https://www.linkedin.com/feed/update/urn:li:activity:7161334636189483009/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <ArticlesCard
+                    onMouseEnter={() => setHoveredArticle(2)}
+                    onMouseLeave={() => setHoveredArticle(null)}
+                    $ishoveredArticle={
+                      hoveredArticle === null || hoveredArticle === 2
+                        ? "true"
+                        : "false"
+                    }
+                  >
+                    <ArticlesTop>
+                      <ProjectText2>Personal</ProjectText2>
+                      <ProjectText3>Febuary 08, 2024</ProjectText3>
+                    </ArticlesTop>
+                    <ArticlesBottom>
+                      <ProjectText2>
+                      Finding Consistency in my Journey as a Frontend Developer
+                      </ProjectText2>
+                      <ProjectText3>5min read</ProjectText3>
+                    </ArticlesBottom>
+                  </ArticlesCard>
+                  </a>
+                </ArticlesColoum1>
+                <ArticlesColoum2>
+                <a
+                  href="https://www.linkedin.com/feed/update/urn:li:activity:7137837311353929728/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <ArticlesCard
+                    onMouseEnter={() => setHoveredArticle(3)}
+                    onMouseLeave={() => setHoveredArticle(null)}
+                    $ishoveredArticle={
+                      hoveredArticle === null || hoveredArticle === 3
+                        ? "true"
+                        : "false"
+                    }
+                  >
+                    <ArticlesTop>
+                      <ProjectText2>Personal</ProjectText2>
+                      <ProjectText3>December 05, 2023</ProjectText3>
+                    </ArticlesTop>
+                    <ArticlesBottom>
+                      <ProjectText2>
+                        My journey as a frontend developer intern
+                      </ProjectText2>
+                      <ProjectText3>5min read</ProjectText3>
+                    </ArticlesBottom>
+                  </ArticlesCard>
+                  </a>
+                  <a
+                  href="https://www.linkedin.com/feed/update/urn:li:activity:7134870313862914048/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <ArticlesCard
+                    onMouseEnter={() => setHoveredArticle(4)}
+                    onMouseLeave={() => setHoveredArticle(null)}
+                    $ishoveredArticle={
+                      hoveredArticle === null || hoveredArticle === 4
+                        ? "true"
+                        : "false"
+                    }
+                  >
+                    <ArticlesTop>
+                      <ProjectText2>Personal</ProjectText2>
+                      <ProjectText3>November 27, 2023</ProjectText3>
+                    </ArticlesTop>
+                    <ArticlesBottom>
+                      <ProjectText2>
+                      Reflecting on DevFest Abuja 2023
+                      </ProjectText2>
+                      <ProjectText3>5min read</ProjectText3>
+                    </ArticlesBottom>
+                  </ArticlesCard>
+                  </a> 
+                </ArticlesColoum2>
               </Articles>
+              <Footer>
+                <ProjectText3>
+                  Inspired by{" "}
+                  <a
+                    href="https://www.sarahdayan.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Sarah Dayan
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://brittanychiang.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Brittany Chiang.
+                  </a>
+                </ProjectText3>
+              </Footer>
             </RightContent>
           </Right>
         </Container>
