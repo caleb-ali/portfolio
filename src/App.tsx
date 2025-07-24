@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import "inter-ui/inter.css";
 import profilePicture from "./images/calebali.png";
@@ -96,6 +96,37 @@ const RightContent = styled.div`
   }
 `;
 
+// const MobileHeader = styled.div`
+//   display: none;
+//   @media (max-width: 1000px) {
+//   display: block;
+//   margin-bottom: 1.5rem;
+//   }
+ 
+// `;
+
+const MobileHeader = styled.div<{ $isSticky?: boolean }>`
+  display: none;
+  @media (max-width: 1000px) {
+    display: block;
+    margin-bottom: 1.5rem;
+    position: sticky;
+    top: 0;
+    padding: 1rem 0;
+    z-index: 100;
+    background-color: ${props => props.$isSticky ? "#202022" : "transparent"};
+    transition: background-color 0.3s ease;
+  }
+`;
+
+const MobileHeaderText = styled.p`
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 600;
+`;
+
 const SmallText = styled.p`
   font-size: 18px;
   color: #949495;
@@ -104,6 +135,7 @@ const SmallText = styled.p`
 `;
 
 const CardHeader = styled.p`
+  margin: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -190,12 +222,18 @@ const StyledSVG = styled.img`
 
 const ProfilePic = styled.div``;
 
-const About = styled.div``;
+const About = styled.div`
+  scroll-margin-top: 100px;
+`;
 
 const Articles = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
+  margin-top: 5rem;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const ArticlesColoum1 = styled.div`
@@ -203,6 +241,9 @@ const ArticlesColoum1 = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   width: 50%;
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
 `;
 
 const ArticlesColoum2 = styled.div`
@@ -211,6 +252,10 @@ const ArticlesColoum2 = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   width: 50%;
+  @media (max-width: 1000px) {
+    width: 100%;
+    margin-top: 0;
+  }
 `;
 
 const ArticlesTop = styled.div``;
@@ -225,6 +270,7 @@ const Projects = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-top: 5rem;
 `;
 
 const ProjectText1 = styled.p`
@@ -255,8 +301,11 @@ const ProjectText3 = styled.p`
     text-decoration: none;
     transition: color 0.3s ease;
     font-size: 15px;
-    &:hover {
-      color: ${orangePalette.secondary};
+    
+    @media (min-width: 1001px) {
+      &:hover {
+        color: ${orangePalette.secondary};
+      }
     }
   }
 `;
@@ -289,11 +338,13 @@ const ArticlesCard = styled.div<ArticleCardProps>`
   transition: all 0.3s ease;
   transform-origin: center;
 
-  &:hover {
-    background-color: #202022;
-    transform: scale(1.11); // Slightly reduced scale for better fit
-    cursor: pointer;
-    opacity: 1;
+  @media (min-width: 1001px) {
+    &:hover {
+      background-color: #202022;
+      transform: scale(1.11);
+      cursor: pointer;
+      opacity: 1;
+    }
   }
 `;
 
@@ -309,24 +360,25 @@ const ProjectsCard = styled.div<ProjectsCardProps>`
   opacity: ${(props) =>
     props.$ishovered === "true" || props.$ishovered === null ? 1 : 0.5};
 
-  &:hover {
-    background-color: #202022;
-    transform: scale(1.11);
-    cursor: pointer;
-    opacity: 1;
+  @media (min-width: 1001px) {
+    &:hover {
+      background-color: #202022;
+      transform: scale(1.11);
+      cursor: pointer;
+      opacity: 1;
 
-    ${ProjectText4} {
-      color: ${orangePalette.secondary};
+      ${ProjectText4} {
+        color: ${orangePalette.secondary};
 
-      img:last-of-type {
-        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
-          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
-        transform: translateY(-2px) translateX(2px);
+        img:last-of-type {
+          filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+            saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+          transform: translateY(-2px) translateX(2px);
+        }
       }
     }
   }
 `;
-
 const ExperienceCard = styled.div`
   display: flex;
   flex-direction: row;
@@ -334,59 +386,68 @@ const ExperienceCard = styled.div`
   margin-bottom: 4rem;
   padding: 1rem 2rem;
   margin-left: -2rem;
-  /* border-radius: 5px; */
   color: #ffffff;
-
   transition: all 0.3s ease;
   transform-origin: center;
 
-  &:hover {
-    background-color: #202022;
-    transform: scale(1.05); /* 5% scale up */
-    cursor: pointer;
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-    ${CardHeader} {
-      color: ${orangePalette.secondary};
+  @media (min-width: 1001px) {
+    &:hover {
+      background-color: #202022;
+      transform: scale(1.05);
+      cursor: pointer;
 
-      img:first-of-type {
-        /* Dot image */
-        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
-          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
-      }
+      ${CardHeader} {
+        color: ${orangePalette.secondary};
 
-      img:last-of-type {
-        /* Arrow image */
-        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
-          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
-        transform: translateY(-2px) translateX(2px);
+        img:first-of-type {
+          filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+            saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+        }
+
+        img:last-of-type {
+          filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+            saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+          transform: translateY(-2px) translateX(2px);
+        }
       }
     }
   }
 `;
-
 const ViewResume = styled.div`
   color: #ffffff;
-
   transition: all 0.3s ease;
   transform-origin: center;
 
-  &:hover {
-    cursor: pointer;
+  @media (min-width: 1001px) {
+    &:hover {
+      cursor: pointer;
 
-    ${CardHeader} {
-      color: ${orangePalette.secondary};
+      ${CardHeader} {
+        color: ${orangePalette.secondary};
 
-      img {
-        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
-          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
-        transform: translateY(-2px) translateX(2px);
+        img {
+          filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+            saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+          transform: translateY(-2px) translateX(2px);
+        }
       }
     }
   }
 `;
+
 
 const CardLeft = styled.div`
   width: 30%;
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
 `;
 
 const CardRight = styled.div`
@@ -394,6 +455,11 @@ const CardRight = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
 `;
 
 const CardRightTop = styled.div``;
@@ -429,29 +495,46 @@ const LargeText2 = styled.h1`
   color: #ffffff;
 `;
 
-const Section = styled.div`
+const Section = styled.div<{ $active?: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: #949495;
+  color: ${(props) => (props.$active ? orangePalette.secondary : "#949495")};
+  font-weight: ${(props) => (props.$active ? "600" : "normal")};
   transition: all 0.3s ease;
 
-  &:hover {
-    color: ${orangePalette.secondary};
-    font-weight: 600;
+  @media (min-width: 1001px) {
+    &:hover {
+      color: ${orangePalette.secondary};
+      font-weight: 600;
+    }
+
+    &:hover::before,
+    &::before {
+      content: "";
+      display: inline-block;
+      width: ${(props) => (props.$active ? "60px" : "30px")};
+      height: 1px;
+      background-color: ${(props) =>
+        props.$active ? orangePalette.secondary : "#949495"};
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+
+    &:hover::before {
+      width: 60px;
+      background-color: ${orangePalette.secondary};
+    }
   }
 
-  &:hover::before {
-    width: 60px;
-    background-color: ${orangePalette.secondary};
-  }
-
+  // For mobile (keep the active state styling)
   &::before {
     content: "";
     display: inline-block;
-    width: 30px;
+    width: ${(props) => (props.$active ? "60px" : "30px")};
     height: 1px;
-    background-color: #949495;
+    background-color: ${(props) =>
+      props.$active ? orangePalette.secondary : "#949495"};
     margin-right: 10px;
     transition: all 0.3s ease;
   }
@@ -490,18 +573,19 @@ const SocialLink = styled.div`
     gap: 0.5rem;
     text-decoration: none;
     color: #ffffff;
-    /* transition: color 0.7s ease-in-out; */
     transition: all 0.3s ease;
 
-    &:hover {
-      color: ${orangePalette.secondary};
+    @media (min-width: 1001px) {
+      &:hover {
+        color: ${orangePalette.secondary};
 
-      p {
-        color: inherit;
-      }
-      img {
-        filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
-          saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+        p {
+          color: inherit;
+        }
+        img {
+          filter: brightness(0) saturate(100%) invert(58%) sepia(98%)
+            saturate(1037%) hue-rotate(359deg) brightness(101%) contrast(105%);
+        }
       }
     }
   }
@@ -525,9 +609,54 @@ interface ArticleCardProps {
   $ishoveredArticle?: string | null;
 }
 
+
+
+
 const App = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredArticle, setHoveredArticle] = useState<number | null>(null);
+  const [activeSection, setActiveSection] = useState("about");
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["about", "experience", "projects", "articles"];
+      const scrollPosition = window.scrollY + 200; // Adjust this offset as needed
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetHeight = element.offsetHeight;
+
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <>
@@ -550,16 +679,28 @@ const App = () => {
                 </Description>
               </Top>
               <Middle>
-                <Section>
+                <Section
+                  onClick={() => scrollToSection("about")}
+                  $active={activeSection === "about"}
+                >
                   <SmallTextBold>ABOUT</SmallTextBold>
                 </Section>
-                <Section>
+                <Section
+                  onClick={() => scrollToSection("experience")}
+                  $active={activeSection === "experience"}
+                >
                   <SmallTextBold>EXPERIENCE</SmallTextBold>
                 </Section>
-                <Section>
+                <Section
+                  onClick={() => scrollToSection("projects")}
+                  $active={activeSection === "projects"}
+                >
                   <SmallTextBold>PROJECTS</SmallTextBold>
                 </Section>
-                <Section>
+                <Section
+                  onClick={() => scrollToSection("articles")}
+                  $active={activeSection === "articles"}
+                >
                   <SmallTextBold>ARTICLES</SmallTextBold>
                 </Section>
               </Middle>
@@ -602,7 +743,11 @@ const App = () => {
           </Left>
           <Right>
             <RightContent>
-              <About>
+             
+              <About id="about">
+              <MobileHeader>
+                <MobileHeaderText>ABOUT</MobileHeaderText>
+              </MobileHeader>
                 <SmallText>
                   I'm a frontend developer passionate about building responsive,
                   user-centered interfaces that merge elegant design with solid
@@ -626,47 +771,51 @@ const App = () => {
                   movies or taking a walk{" "}
                 </SmallText>
               </About>
-
-              <Experience>
-              <a
+     
+              <Experience id="experience">
+              <MobileHeader>
+                <MobileHeaderText>EXPERIENCE</MobileHeaderText>
+              </MobileHeader>
+                <a
                   href="https://www.evendy.co/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ textDecoration: "none" }}
                 >
-                <ExperienceCard>
-                  <CardLeft>
-                    <CardText>APRIL, 2024 - PRESENT</CardText>
-                  </CardLeft>
-                  <CardRight>
-                    <CardRightTop>
-                      <CardHeader>
-                        Frontend Developer
-                        <DotImage src={Dot} />
-                        Evendy
-                        <img src={Arrow} alt="arrow" />
-                      </CardHeader>
-                    </CardRightTop>
-                    <CardRightMiddle>
-                      <CardText2>
-                        Build and maintain a role-based access control dashboard
-                        and responsive web interfaces. Collaborate with backend
-                        engineers to implement secure API integrations and
-                        real-time data handling. Translate Figma designs into
-                        production-ready UIs and advocate for performance and
-                        design consistency across web and mobile platforms.
-                      </CardText2>
-                    </CardRightMiddle>
-                    <CardRightBottom>
-                      <Tools>TypeScript</Tools>
-                      <Tools>React</Tools>
-                      <Tools>React Query</Tools>
-                      <Tools>Styled Components</Tools>
-                      <Tools>Ant Design</Tools>
-                      <Tools>Recharts</Tools>
-                    </CardRightBottom>
-                  </CardRight>
-                </ExperienceCard>
+                  <ExperienceCard>
+                    <CardLeft>
+                      <CardText>2024 - PRESENT</CardText>
+                    </CardLeft>
+                    <CardRight>
+                      <CardRightTop>
+                        <CardHeader>
+                          Frontend Developer
+                          <DotImage src={Dot} />
+                          Evendy
+                          <img src={Arrow} alt="arrow" />
+                        </CardHeader>
+                      </CardRightTop>
+                      <CardRightMiddle>
+                        <CardText2>
+                          Build and maintain a role-based access control
+                          dashboard and responsive web interfaces. Collaborate
+                          with backend engineers to implement secure API
+                          integrations and real-time data handling. Translate
+                          Figma designs into production-ready UIs and advocate
+                          for performance and design consistency across web and
+                          mobile platforms.
+                        </CardText2>
+                      </CardRightMiddle>
+                      <CardRightBottom>
+                        <Tools>TypeScript</Tools>
+                        <Tools>React</Tools>
+                        <Tools>React Query</Tools>
+                        <Tools>Styled Components</Tools>
+                        <Tools>Ant Design</Tools>
+                        <Tools>Recharts</Tools>
+                      </CardRightBottom>
+                    </CardRight>
+                  </ExperienceCard>
                 </a>
                 <a
                   href="https://thriveagric.com/"
@@ -674,37 +823,37 @@ const App = () => {
                   rel="noopener noreferrer"
                   style={{ textDecoration: "none" }}
                 >
-                <ExperienceCard>
-                  <CardLeft>
-                    <CardText>MAY, 2023 - NOV, 2023</CardText>
-                  </CardLeft>
-                  <CardRight>
-                    <CardRightTop>
-                      <CardHeader>
-                        Frontend Developer intern <DotImage src={Dot} />{" "}
-                        ThriveAgric <img src={Arrow} alt="arrow" />
-                      </CardHeader>
-                    </CardRightTop>
-                    <CardRightMiddle>
-                      <CardText2>
-                        Led a cross-functional team in building a user-focused
-                        React.js web app, streamlining project delivery through
-                        effective version control and collaboration. Integrated
-                        frontend with backend services, improved cross-browser
-                        compatibility, and optimized performance for
-                        responsiveness across devices.
-                      </CardText2>
-                    </CardRightMiddle>
-                    <CardRightBottom>
-                      <Tools>HTML</Tools>
-                      <Tools>CSS</Tools>
-                      <Tools>React</Tools>
-                      <Tools>JavaScript</Tools>
-                      <Tools>Tailwind CSS</Tools>
-                      <Tools>React Native</Tools>
-                    </CardRightBottom>
-                  </CardRight>
-                </ExperienceCard>
+                  <ExperienceCard>
+                    <CardLeft>
+                      <CardText>MAY - NOV 2023</CardText>
+                    </CardLeft>
+                    <CardRight>
+                      <CardRightTop>
+                        <CardHeader>
+                          Frontend Developer intern <DotImage src={Dot} />{" "}
+                          ThriveAgric <img src={Arrow} alt="arrow" />
+                        </CardHeader>
+                      </CardRightTop>
+                      <CardRightMiddle>
+                        <CardText2>
+                          Led a cross-functional team in building a user-focused
+                          React.js web app, streamlining project delivery
+                          through effective version control and collaboration.
+                          Integrated frontend with backend services, improved
+                          cross-browser compatibility, and optimized performance
+                          for responsiveness across devices.
+                        </CardText2>
+                      </CardRightMiddle>
+                      <CardRightBottom>
+                        <Tools>HTML</Tools>
+                        <Tools>CSS</Tools>
+                        <Tools>React</Tools>
+                        <Tools>JavaScript</Tools>
+                        <Tools>Tailwind CSS</Tools>
+                        <Tools>React Native</Tools>
+                      </CardRightBottom>
+                    </CardRight>
+                  </ExperienceCard>
                 </a>
                 <ViewResume>
                   <CardHeader>
@@ -714,31 +863,38 @@ const App = () => {
                 </ViewResume>
               </Experience>
 
-              <Projects>
-              <a
+              <Projects id="projects">
+              <MobileHeader>
+                <MobileHeaderText>PROJECTS</MobileHeaderText>
+              </MobileHeader>
+                <a
                   href="https://calebali.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ textDecoration: "none" }}
                 >
-                <ProjectsCard
-                  onMouseEnter={() => setHoveredCard(1)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  $ishovered={
-                    hoveredCard === null || hoveredCard === 1 ? "true" : "false"
-                  }
-                >
-                  <ProjectText1>Rekruit</ProjectText1>
-                  <ProjectText2>
-                    Javascript <DotImage src={Dot} /> React{" "}
-                    <DotImage src={Dot} /> Tailwind css
-                  </ProjectText2>
-                  <ProjectText3>A recruitment management platform</ProjectText3>
-                  <ProjectText4>
-                    View Project
-                    <img src={Arrow} alt="arrow" />
-                  </ProjectText4>
-                </ProjectsCard>
+                  <ProjectsCard
+                    onMouseEnter={() => setHoveredCard(1)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    $ishovered={
+                      hoveredCard === null || hoveredCard === 1
+                        ? "true"
+                        : "false"
+                    }
+                  >
+                    <ProjectText1>Rekruit</ProjectText1>
+                    <ProjectText2>
+                      Javascript <DotImage src={Dot} /> React{" "}
+                      <DotImage src={Dot} /> Tailwind css
+                    </ProjectText2>
+                    <ProjectText3>
+                      A recruitment management platform
+                    </ProjectText3>
+                    <ProjectText4>
+                      View Project
+                      <img src={Arrow} alt="arrow" />
+                    </ProjectText4>
+                  </ProjectsCard>
                 </a>
                 <a
                   href="https://calebali.vercel.app/"
@@ -773,138 +929,144 @@ const App = () => {
                   rel="noopener noreferrer"
                   style={{ textDecoration: "none" }}
                 >
-                <ProjectsCard
-                  onMouseEnter={() => setHoveredCard(3)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  $ishovered={
-                    hoveredCard === null || hoveredCard === 3 ? "true" : "false"
-                  }
-                >
-                  <ProjectText1>Mobile Task Manager</ProjectText1>
-                  <ProjectText2>React Native</ProjectText2>
-                  <ProjectText3>
-                    A simple mobile task manager built using react native
-                  </ProjectText3>
-                  <ProjectText4>
-                    View Project
-                    <img src={Arrow} alt="arrow" />
-                  </ProjectText4>
-                </ProjectsCard>
-                </a>
-              </Projects>
-              <Articles>
-                <ArticlesColoum1>
-                <a
-                  href="https://dev.to/calebali/how-to-build-dynamic-charts-in-react-with-recharts-including-edge-cases-3e72"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
-                >
-                  <ArticlesCard
-                    onMouseEnter={() => setHoveredArticle(1)}
-                    onMouseLeave={() => setHoveredArticle(null)}
-                    $ishoveredArticle={
-                      hoveredArticle === null || hoveredArticle === 1
+                  <ProjectsCard
+                    onMouseEnter={() => setHoveredCard(3)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    $ishovered={
+                      hoveredCard === null || hoveredCard === 3
                         ? "true"
                         : "false"
                     }
                   >
-                    <ArticlesTop>
-                      <ProjectText2>Frontend</ProjectText2>
-                      <ProjectText3>May 21, 2025</ProjectText3>
-                    </ArticlesTop>
-                    <ArticlesBottom>
-                      <ProjectText2>
-                      How to Build Dynamic Charts in React with Recharts
-                      </ProjectText2>
-                      <ProjectText3>20min read</ProjectText3>
-                    </ArticlesBottom>
-                  </ArticlesCard>
+                    <ProjectText1>Mobile Task Manager</ProjectText1>
+                    <ProjectText2>React Native</ProjectText2>
+                    <ProjectText3>
+                      A simple mobile task manager built using react native
+                    </ProjectText3>
+                    <ProjectText4>
+                      View Project
+                      <img src={Arrow} alt="arrow" />
+                    </ProjectText4>
+                  </ProjectsCard>
+                </a>
+              </Projects>
+              <Articles id="articles">
+              <MobileHeader>
+                <MobileHeaderText>ARTICLES</MobileHeaderText>
+              </MobileHeader>
+                <ArticlesColoum1>
+                  <a
+                    href="https://dev.to/calebali/how-to-build-dynamic-charts-in-react-with-recharts-including-edge-cases-3e72"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <ArticlesCard
+                      onMouseEnter={() => setHoveredArticle(1)}
+                      onMouseLeave={() => setHoveredArticle(null)}
+                      $ishoveredArticle={
+                        hoveredArticle === null || hoveredArticle === 1
+                          ? "true"
+                          : "false"
+                      }
+                    >
+                      <ArticlesTop>
+                        <ProjectText2>Frontend</ProjectText2>
+                        <ProjectText3>May 21, 2025</ProjectText3>
+                      </ArticlesTop>
+                      <ArticlesBottom>
+                        <ProjectText2>
+                          How to Build Dynamic Charts in React with Recharts
+                        </ProjectText2>
+                        <ProjectText3>20min read</ProjectText3>
+                      </ArticlesBottom>
+                    </ArticlesCard>
                   </a>
 
                   <a
-                  href="https://www.linkedin.com/feed/update/urn:li:activity:7161334636189483009/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
-                >
-                  <ArticlesCard
-                    onMouseEnter={() => setHoveredArticle(2)}
-                    onMouseLeave={() => setHoveredArticle(null)}
-                    $ishoveredArticle={
-                      hoveredArticle === null || hoveredArticle === 2
-                        ? "true"
-                        : "false"
-                    }
+                    href="https://www.linkedin.com/feed/update/urn:li:activity:7161334636189483009/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
                   >
-                    <ArticlesTop>
-                      <ProjectText2>Personal</ProjectText2>
-                      <ProjectText3>Febuary 08, 2024</ProjectText3>
-                    </ArticlesTop>
-                    <ArticlesBottom>
-                      <ProjectText2>
-                      Finding Consistency in my Journey as a Frontend Developer
-                      </ProjectText2>
-                      <ProjectText3>5min read</ProjectText3>
-                    </ArticlesBottom>
-                  </ArticlesCard>
+                    <ArticlesCard
+                      onMouseEnter={() => setHoveredArticle(2)}
+                      onMouseLeave={() => setHoveredArticle(null)}
+                      $ishoveredArticle={
+                        hoveredArticle === null || hoveredArticle === 2
+                          ? "true"
+                          : "false"
+                      }
+                    >
+                      <ArticlesTop>
+                        <ProjectText2>Personal</ProjectText2>
+                        <ProjectText3>Febuary 08, 2024</ProjectText3>
+                      </ArticlesTop>
+                      <ArticlesBottom>
+                        <ProjectText2>
+                          Finding Consistency in my Journey as a Frontend
+                          Developer
+                        </ProjectText2>
+                        <ProjectText3>5min read</ProjectText3>
+                      </ArticlesBottom>
+                    </ArticlesCard>
                   </a>
                 </ArticlesColoum1>
                 <ArticlesColoum2>
-                <a
-                  href="https://www.linkedin.com/feed/update/urn:li:activity:7137837311353929728/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
-                >
-                  <ArticlesCard
-                    onMouseEnter={() => setHoveredArticle(3)}
-                    onMouseLeave={() => setHoveredArticle(null)}
-                    $ishoveredArticle={
-                      hoveredArticle === null || hoveredArticle === 3
-                        ? "true"
-                        : "false"
-                    }
+                  <a
+                    href="https://www.linkedin.com/feed/update/urn:li:activity:7137837311353929728/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
                   >
-                    <ArticlesTop>
-                      <ProjectText2>Personal</ProjectText2>
-                      <ProjectText3>December 05, 2023</ProjectText3>
-                    </ArticlesTop>
-                    <ArticlesBottom>
-                      <ProjectText2>
-                        My journey as a frontend developer intern
-                      </ProjectText2>
-                      <ProjectText3>5min read</ProjectText3>
-                    </ArticlesBottom>
-                  </ArticlesCard>
+                    <ArticlesCard
+                      onMouseEnter={() => setHoveredArticle(3)}
+                      onMouseLeave={() => setHoveredArticle(null)}
+                      $ishoveredArticle={
+                        hoveredArticle === null || hoveredArticle === 3
+                          ? "true"
+                          : "false"
+                      }
+                    >
+                      <ArticlesTop>
+                        <ProjectText2>Personal</ProjectText2>
+                        <ProjectText3>December 05, 2023</ProjectText3>
+                      </ArticlesTop>
+                      <ArticlesBottom>
+                        <ProjectText2>
+                          My journey as a frontend developer intern
+                        </ProjectText2>
+                        <ProjectText3>5min read</ProjectText3>
+                      </ArticlesBottom>
+                    </ArticlesCard>
                   </a>
                   <a
-                  href="https://www.linkedin.com/feed/update/urn:li:activity:7134870313862914048/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
-                >
-                  <ArticlesCard
-                    onMouseEnter={() => setHoveredArticle(4)}
-                    onMouseLeave={() => setHoveredArticle(null)}
-                    $ishoveredArticle={
-                      hoveredArticle === null || hoveredArticle === 4
-                        ? "true"
-                        : "false"
-                    }
+                    href="https://www.linkedin.com/feed/update/urn:li:activity:7134870313862914048/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
                   >
-                    <ArticlesTop>
-                      <ProjectText2>Personal</ProjectText2>
-                      <ProjectText3>November 27, 2023</ProjectText3>
-                    </ArticlesTop>
-                    <ArticlesBottom>
-                      <ProjectText2>
-                      Reflecting on DevFest Abuja 2023
-                      </ProjectText2>
-                      <ProjectText3>5min read</ProjectText3>
-                    </ArticlesBottom>
-                  </ArticlesCard>
-                  </a> 
+                    <ArticlesCard
+                      onMouseEnter={() => setHoveredArticle(4)}
+                      onMouseLeave={() => setHoveredArticle(null)}
+                      $ishoveredArticle={
+                        hoveredArticle === null || hoveredArticle === 4
+                          ? "true"
+                          : "false"
+                      }
+                    >
+                      <ArticlesTop>
+                        <ProjectText2>Personal</ProjectText2>
+                        <ProjectText3>November 27, 2023</ProjectText3>
+                      </ArticlesTop>
+                      <ArticlesBottom>
+                        <ProjectText2>
+                          Reflecting on DevFest Abuja 2023
+                        </ProjectText2>
+                        <ProjectText3>5min read</ProjectText3>
+                      </ArticlesBottom>
+                    </ArticlesCard>
+                  </a>
                 </ArticlesColoum2>
               </Articles>
               <Footer>
