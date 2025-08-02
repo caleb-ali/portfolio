@@ -1326,7 +1326,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import "inter-ui/inter.css";
 import profilePicture from "./images/calebali.png";
 import Github from "./images/github-brands.svg";
 import Linkedin from "./images/linkedin-brands.svg";
@@ -1337,8 +1336,16 @@ import MouseEffect from "./components/MouseEffect";
 
 // Global styles to remove default margins
 const GlobalStyle = createGlobalStyle`
-
-*, *::before, *::after {
+  /* Define the Inter font-face */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url('https://rsms.me/inter/font-files/Inter.var.woff2') format('woff2 supports variations'),
+         url('https://rsms.me/inter/font-files/Inter.var.woff2') format('woff2-variations');
+  }
+  *, *::before, *::after {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -1348,10 +1355,17 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     background-color: #151515;
-    font-family: 'YourFont', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400; /* Explicit base weight */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  * {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
   .mouse-trail-element {
     will-change: transform, opacity;
     backface-visibility: hidden;
@@ -1365,7 +1379,6 @@ const orangePalette = {
 };
 
 const AppContainer = styled.div`
-  font-family: "Inter", sans-serif;
   min-height: 100vh;
   width: 100%;
   background-color: #151515;
@@ -2058,6 +2071,12 @@ const App = () => {
     "articles",
   ]);
   const [isAtTop, setIsAtTop] = useState(true);
+
+  useEffect(() => {
+    document.fonts.ready.then(() => {
+      console.log('All fonts loaded');
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
