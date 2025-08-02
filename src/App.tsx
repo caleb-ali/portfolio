@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import "inter-ui/inter.css";
 import profilePicture from "./images/calebali.png";
@@ -7,6 +7,7 @@ import Linkedin from "./images/linkedin-brands.svg";
 import Envelope from "./images/envelope-solid.svg";
 import Dot from "./images/dot.png";
 import Arrow from "./images/right-up.png";
+import MouseEffect from "./components/MouseEffect";
 
 // Global styles to remove default margins
 const GlobalStyle = createGlobalStyle`
@@ -15,9 +16,26 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     background-color: #151515;
   }
+  .mouse-trail-element {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
 `;
 
-// Add this at the top with your other imports
+// const GlobalStyle = createGlobalStyle`
+//   body {
+//     margin: 0;
+//     padding: 0;
+//     background-color: #151515;
+//     scroll-behavior: smooth;  // Add this line
+//   }
+
+//   // Optional: For better scroll experience
+//   html {
+//     scroll-behavior: smooth;
+//   }
+// `;
+
 const orangePalette = {
   primary: "#FF7A00",
   secondary: "#FF9A42",
@@ -31,7 +49,6 @@ const AppContainer = styled.div`
   background-color: #151515;
   display: flex;
   justify-content: center;
-  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -39,9 +56,10 @@ const Container = styled.div`
   flex-direction: row;
   max-width: 1560px;
   width: 100%;
+
   @media (max-width: 1000px) {
     flex-direction: column;
-    min-height: 100vh; // Ensure container takes full height
+    min-height: 100vh;
   }
 `;
 
@@ -49,9 +67,10 @@ const Left = styled.div`
   width: 45%;
   background-color: #151515;
   position: fixed;
+
   @media (max-width: 1000px) {
     width: 100%;
-    position: static; // Ensure normal document flow
+    position: static;
   }
 `;
 
@@ -60,6 +79,7 @@ const LeftContent = styled.div`
   flex-direction: column;
   gap: 4rem;
   margin: 1rem;
+
   @media (min-width: 1000px) {
     margin: 2rem;
   }
@@ -67,7 +87,8 @@ const LeftContent = styled.div`
     margin: 6rem;
   }
   @media (max-width: 1000px) {
-    padding-bottom: 2rem; // Add space before right content
+    padding-bottom: 2rem;
+    gap: 2rem;
   }
 `;
 
@@ -76,9 +97,10 @@ const Right = styled.div`
   background-color: #151515;
   position: relative;
   margin-left: 45%;
+
   @media (max-width: 1000px) {
     width: 100%;
-    position: static; // Ensure normal document flow
+    position: static;
     margin-left: 0;
   }
 `;
@@ -86,8 +108,15 @@ const Right = styled.div`
 const RightContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  margin: 1rem;
+  gap: 10rem;
+  margin: 6rem;
+  position: relative;
+
+  @media (max-width: 1000px) {
+    margin: 0rem;
+    gap: 2rem;
+  }
+
   @media (min-width: 1000px) {
     margin: 2rem;
   }
@@ -96,26 +125,21 @@ const RightContent = styled.div`
   }
 `;
 
-// const MobileHeader = styled.div`
-//   display: none;
-//   @media (max-width: 1000px) {
-//   display: block;
-//   margin-bottom: 1.5rem;
-//   }
- 
-// `;
-
-const MobileHeader = styled.div<{ $isSticky?: boolean }>`
+const MobileHeader = styled.div<{ $isSticky?: boolean; $isTop?: boolean }>`
   display: none;
+
   @media (max-width: 1000px) {
     display: block;
-    margin-bottom: 1.5rem;
     position: sticky;
     top: 0;
-    padding: 1rem 0;
     z-index: 100;
-    background-color: ${props => props.$isSticky ? "#202022" : "transparent"};
+    background-color: ${(props) =>
+      props.$isSticky && !props.$isTop ? "#2a2a2a" : "transparent"};
+    padding: 20px;
+    margin-bottom: 0;
     transition: background-color 0.3s ease;
+    box-shadow: ${(props) =>
+      props.$isSticky && !props.$isTop ? "0 2px 5px rgba(0,0,0,0.2)" : "none"};
   }
 `;
 
@@ -127,11 +151,28 @@ const MobileHeaderText = styled.p`
   font-weight: 600;
 `;
 
+const MobileContainer = styled.div`
+  margin: 1rem;
+`;
+
 const SmallText = styled.p`
   font-size: 18px;
   color: #949495;
   line-height: 1.5;
   margin: 0;
+
+  a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 15px;
+
+    @media (min-width: 1001px) {
+      &:hover {
+        color: ${orangePalette.secondary};
+      }
+    }
+  }
 `;
 
 const CardHeader = styled.p`
@@ -200,7 +241,6 @@ const Bottom = styled.div`
   }
   @media (max-width: 1000px) {
     position: static; // Normal flow on mobile
-    margin: 2rem 0;
   }
   @media (max-width: 450px) {
     gap: 0.5rem;
@@ -223,14 +263,14 @@ const StyledSVG = styled.img`
 const ProfilePic = styled.div``;
 
 const About = styled.div`
-  scroll-margin-top: 100px;
+  /* scroll-margin-top: 100px; */
 `;
 
 const Articles = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
-  margin-top: 5rem;
+  /* margin-top: 5rem; */
   @media (max-width: 1000px) {
     flex-direction: column;
   }
@@ -263,14 +303,14 @@ const ArticlesTop = styled.div``;
 const ArticlesBottom = styled.div``;
 
 const Experience = styled.div`
-  margin-top: 5rem;
+  /* margin-top: 5rem; */
 `;
 
 const Projects = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-top: 5rem;
+  /* margin-top: 5rem; */
 `;
 
 const ProjectText1 = styled.p`
@@ -280,6 +320,18 @@ const ProjectText1 = styled.p`
   font-weight: 600;
 `;
 
+// const ProjectText2 = styled.p`
+//   font-size: 14px;
+//   color: #ffffff;
+//   margin: 0;
+//   font-weight: 500;
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   flex-wrap: wrap;
+
+// `;
+
 const ProjectText2 = styled.p`
   font-size: 14px;
   color: #ffffff;
@@ -288,6 +340,25 @@ const ProjectText2 = styled.p`
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem; // Add small gap between items
+  row-gap: 0.5rem; // Add vertical gap between wrapped lines
+`;
+
+const TechItem = styled.span`
+  display: inline-flex;
+  align-items: center;
+  /* margin-right: 0.25rem; */
+
+  &:not(:last-child)::after {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-image: url(${Dot});
+    background-size: contain;
+    margin-left: 0.25rem;
+  }
 `;
 
 const ProjectText3 = styled.p`
@@ -301,7 +372,7 @@ const ProjectText3 = styled.p`
     text-decoration: none;
     transition: color 0.3s ease;
     font-size: 15px;
-    
+
     @media (min-width: 1001px) {
       &:hover {
         color: ${orangePalette.secondary};
@@ -329,16 +400,22 @@ const ArticlesCard = styled.div<ArticleCardProps>`
   flex-direction: column;
   gap: 5rem;
   padding: 1rem 2rem;
+
   background-color: #202022;
   color: #ffffff;
-  opacity: ${(props) =>
-    props.$ishoveredArticle === "true" || props.$ishoveredArticle === null
-      ? 1
-      : 0.5};
-  transition: all 0.3s ease;
-  transform-origin: center;
+
+  @media (max-width: 1000px) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 
   @media (min-width: 1001px) {
+    opacity: ${(props) =>
+      props.$ishoveredArticle === "true" || props.$ishoveredArticle === null
+        ? 1
+        : 0.5};
+    transition: all 0.3s ease;
+    transform-origin: center;
     &:hover {
       background-color: #202022;
       transform: scale(1.11);
@@ -353,14 +430,16 @@ const ProjectsCard = styled.div<ProjectsCardProps>`
   flex-direction: column;
   gap: 1rem;
   padding: 1rem 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   color: #ffffff;
   background-color: #202022;
   transition: all 0.3s ease;
   transform-origin: center;
-  opacity: ${(props) =>
-    props.$ishovered === "true" || props.$ishovered === null ? 1 : 0.5};
 
   @media (min-width: 1001px) {
+    opacity: ${(props) =>
+      props.$ishovered === "true" || props.$ishovered === null ? 1 : 0.5};
     &:hover {
       background-color: #202022;
       transform: scale(1.11);
@@ -383,7 +462,7 @@ const ExperienceCard = styled.div`
   display: flex;
   flex-direction: row;
   gap: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 1rem;
   padding: 1rem 2rem;
   margin-left: -2rem;
   color: #ffffff;
@@ -422,7 +501,7 @@ const ViewResume = styled.div`
   color: #ffffff;
   transition: all 0.3s ease;
   transform-origin: center;
-
+  margin-top: 2rem;
   @media (min-width: 1001px) {
     &:hover {
       cursor: pointer;
@@ -439,7 +518,6 @@ const ViewResume = styled.div`
     }
   }
 `;
-
 
 const CardLeft = styled.div`
   width: 30%;
@@ -479,7 +557,7 @@ const LargeText = styled.h1`
   margin: 0;
   color: #ffffff; /* Changed from orange to white */
   @media (max-width: 430px) {
-    font-size: 50px;
+    font-size: 48px;
   }
 `;
 
@@ -489,8 +567,8 @@ const OrangeText = styled.span`
 
 const LargeText2 = styled.h1`
   line-height: 1.25;
-  font-weight: 700;
-  font-size: 25px;
+  font-weight: 600;
+  font-size: 22px;
   margin: 0;
   color: #ffffff;
 `;
@@ -591,14 +669,26 @@ const SocialLink = styled.div`
   }
 `;
 
+// const DotImage = styled.img`
+//   width: 14px;
+//   height: 14px;
+// `;
+
 const DotImage = styled.img`
   width: 14px;
   height: 14px;
+  margin: 0 0.25rem; // Add horizontal margin to dots
 `;
 
 const Footer = styled.div`
-  margin-top: 8rem;
-  margin-bottom: 2rem;
+  /* margin-top: 2rem; */
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @media (max-width: 1240px) {
+    margin-bottom: 5.5rem;
+  }
 `;
 
 interface ProjectsCardProps {
@@ -609,26 +699,70 @@ interface ArticleCardProps {
   $ishoveredArticle?: string | null;
 }
 
+const useStickyHeaders = (sectionIds: string[]) => {
+  const [stickyHeader, setStickyHeader] = useState<string | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
+  useEffect(() => {
+    const options = {
+      root: null,
+      // rootMargin: "0px 0px -100% 0px", // Only trigger when element reaches top
+      rootMargin: "0px 0px -100% 0px",
+      threshold: 0,
+    };
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const sectionId = entry.target.getAttribute("id");
+        if (entry.isIntersecting) {
+          setStickyHeader(sectionId);
+        } else if (
+          entry.boundingClientRect.top > 0 &&
+          stickyHeader === sectionId
+        ) {
+          // Only clear if we've scrolled past this section upwards
+          setStickyHeader(null);
+        }
+      });
+    }, options);
 
+    sectionIds.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    observerRef.current = observer;
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [sectionIds, stickyHeader]);
+
+  return stickyHeader;
+};
 const App = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredArticle, setHoveredArticle] = useState<number | null>(null);
   const [activeSection, setActiveSection] = useState("about");
-
+  const stickyHeader = useStickyHeaders([
+    "about",
+    "experience",
+    "projects",
+    "articles",
+  ]);
+  const [isAtTop, setIsAtTop] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
       const sections = ["about", "experience", "projects", "articles"];
-      const scrollPosition = window.scrollY + 200; // Adjust this offset as needed
+      const scrollPosition = window.scrollY + 100; // Adjust this offset as needed
 
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetHeight = element.offsetHeight;
-
+          const { offsetTop, offsetHeight } = element;
           if (
             scrollPosition >= offsetTop &&
             scrollPosition < offsetTop + offsetHeight
@@ -644,10 +778,26 @@ const App = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsAtTop(window.scrollY === 0); // Only true when exactly at top
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 100;
+      let offset = 100; // Default offset
+
+      // Adjust offset based on screen size
+      if (window.innerWidth >= 1000 && window.innerWidth < 1240) {
+        offset = 40; // Smaller offset for medium screens
+      } else if (window.innerWidth >= 1240) {
+        offset = 100; // Larger offset for big screens
+      }
+
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -661,6 +811,7 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
+      <MouseEffect />
       <AppContainer>
         <Container>
           <Left>
@@ -743,132 +894,152 @@ const App = () => {
           </Left>
           <Right>
             <RightContent>
-             
               <About id="about">
-              <MobileHeader>
-                <MobileHeaderText>ABOUT</MobileHeaderText>
-              </MobileHeader>
-                <SmallText>
-                  I'm a frontend developer passionate about building responsive,
-                  user-centered interfaces that merge elegant design with solid
-                  engineering. I specialize in creating seamless experiences
-                  across all devices, focusing on clean, maintainable code that
-                  supports both performance and usability. I thrive in
-                  collaborative environments where thoughtful design meets
-                  functional execution.
-                  <br />
-                  <br />
-                  Currently, I’m a Frontend Developer at Evendy, where I focus
-                  on building and maintaining a role-based access control
-                  dashboard and vendor marketplace. I work on crafting
-                  responsive and secure user interfaces that ensure seamless
-                  experiences across devices, while collaborating closely with
-                  backend teams to integrate frontend logic and maintain
-                  efficient user sessions.
-                  <br />
-                  <br />
-                  In my spare time, I’m usually learning something new, watching
-                  movies or taking a walk{" "}
-                </SmallText>
+                <MobileHeader
+                  $isSticky={stickyHeader === "about"}
+                  $isTop={isAtTop}
+                >
+                  <MobileHeaderText>ABOUT</MobileHeaderText>
+                </MobileHeader>
+                <MobileContainer>
+                  <SmallText>
+                    I'm a frontend developer passionate about building
+                    responsive, user-centered interfaces that merge elegant
+                    design with solid engineering. I specialize in creating
+                    seamless experiences across all devices, focusing on clean,
+                    maintainable code that supports both performance and
+                    usability. I thrive in collaborative environments where
+                    thoughtful design meets functional execution.
+                    <br />
+                    <br />
+                    Currently, I’m a Frontend Developer at   <a
+                    href="https://www.evendy.co/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >Evendy</a>, where I focus
+                    on building and maintaining a role-based access control
+                    dashboard and vendor marketplace. I work on crafting
+                    responsive and secure user interfaces that ensure seamless
+                    experiences across devices, while collaborating closely with
+                    backend teams to integrate frontend logic and maintain
+                    efficient user sessions.
+                    <br />
+                    <br />
+                    In my spare time, I’m usually learning something new,
+                    watching movies or taking a walk{" "}
+                  </SmallText>
+                </MobileContainer>
               </About>
-     
+
               <Experience id="experience">
-              <MobileHeader>
-                <MobileHeaderText>EXPERIENCE</MobileHeaderText>
-              </MobileHeader>
-                <a
-                  href="https://www.evendy.co/"
+                <MobileHeader $isSticky={stickyHeader === "experience"}>
+                  <MobileHeaderText>EXPERIENCE</MobileHeaderText>
+                </MobileHeader>
+
+                <MobileContainer>
+                  <a
+                    href="https://www.evendy.co/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <ExperienceCard >
+                      <CardLeft>
+                        <CardText>2024 - PRESENT</CardText>
+                      </CardLeft>
+                      <CardRight>
+                        <CardRightTop>
+                          <CardHeader>
+                            Frontend Developer
+                            <DotImage src={Dot} />
+                            Evendy
+                            <img src={Arrow} alt="arrow" />
+                          </CardHeader>
+                        </CardRightTop>
+                        <CardRightMiddle>
+                          <CardText2>
+                            Build and maintain a role-based access control
+                            dashboard and responsive web interfaces. Collaborate
+                            with backend engineers to implement secure API
+                            integrations and real-time data handling. Translate
+                            Figma designs into production-ready UIs and advocate
+                            for performance and design consistency across web
+                            and mobile platforms.
+                          </CardText2>
+                        </CardRightMiddle>
+                        <CardRightBottom>
+                          <Tools>TypeScript</Tools>
+                          <Tools>React</Tools>
+                          <Tools>React Query</Tools>
+                          <Tools>Styled Components</Tools>
+                          <Tools>Ant Design</Tools>
+                          <Tools>Recharts</Tools>
+                        </CardRightBottom>
+                      </CardRight>
+                    </ExperienceCard>
+                  </a>
+                  <a
+                    href="https://thriveagric.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <ExperienceCard>
+                      <CardLeft>
+                        <CardText>MAY - NOV 2023</CardText>
+                      </CardLeft>
+                      <CardRight>
+                        <CardRightTop>
+                          <CardHeader>
+                            Frontend Developer intern <DotImage src={Dot} />{" "}
+                            ThriveAgric <img src={Arrow} alt="arrow" />
+                          </CardHeader>
+                        </CardRightTop>
+                        <CardRightMiddle>
+                          <CardText2>
+                            Led a cross-functional team in building a
+                            user-focused React.js web app, streamlining project
+                            delivery through effective version control and
+                            collaboration. Integrated frontend with backend
+                            services, improved cross-browser compatibility, and
+                            optimized performance for responsiveness across
+                            devices.
+                          </CardText2>
+                        </CardRightMiddle>
+                        <CardRightBottom>
+                          <Tools>HTML</Tools>
+                          <Tools>CSS</Tools>
+                          <Tools>React</Tools>
+                          <Tools>JavaScript</Tools>
+                          <Tools>Tailwind CSS</Tools>
+                          <Tools>React Native</Tools>
+                        </CardRightBottom>
+                      </CardRight>
+                    </ExperienceCard>
+                  </a>
+                  <a
+                  href="https://drive.google.com/file/d/1K4L_-TWddUeCy98ZEh07QxO2G9lEX5G9/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ textDecoration: "none" }}
                 >
-                  <ExperienceCard>
-                    <CardLeft>
-                      <CardText>2024 - PRESENT</CardText>
-                    </CardLeft>
-                    <CardRight>
-                      <CardRightTop>
-                        <CardHeader>
-                          Frontend Developer
-                          <DotImage src={Dot} />
-                          Evendy
-                          <img src={Arrow} alt="arrow" />
-                        </CardHeader>
-                      </CardRightTop>
-                      <CardRightMiddle>
-                        <CardText2>
-                          Build and maintain a role-based access control
-                          dashboard and responsive web interfaces. Collaborate
-                          with backend engineers to implement secure API
-                          integrations and real-time data handling. Translate
-                          Figma designs into production-ready UIs and advocate
-                          for performance and design consistency across web and
-                          mobile platforms.
-                        </CardText2>
-                      </CardRightMiddle>
-                      <CardRightBottom>
-                        <Tools>TypeScript</Tools>
-                        <Tools>React</Tools>
-                        <Tools>React Query</Tools>
-                        <Tools>Styled Components</Tools>
-                        <Tools>Ant Design</Tools>
-                        <Tools>Recharts</Tools>
-                      </CardRightBottom>
-                    </CardRight>
-                  </ExperienceCard>
-                </a>
-                <a
-                  href="https://thriveagric.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
-                >
-                  <ExperienceCard>
-                    <CardLeft>
-                      <CardText>MAY - NOV 2023</CardText>
-                    </CardLeft>
-                    <CardRight>
-                      <CardRightTop>
-                        <CardHeader>
-                          Frontend Developer intern <DotImage src={Dot} />{" "}
-                          ThriveAgric <img src={Arrow} alt="arrow" />
-                        </CardHeader>
-                      </CardRightTop>
-                      <CardRightMiddle>
-                        <CardText2>
-                          Led a cross-functional team in building a user-focused
-                          React.js web app, streamlining project delivery
-                          through effective version control and collaboration.
-                          Integrated frontend with backend services, improved
-                          cross-browser compatibility, and optimized performance
-                          for responsiveness across devices.
-                        </CardText2>
-                      </CardRightMiddle>
-                      <CardRightBottom>
-                        <Tools>HTML</Tools>
-                        <Tools>CSS</Tools>
-                        <Tools>React</Tools>
-                        <Tools>JavaScript</Tools>
-                        <Tools>Tailwind CSS</Tools>
-                        <Tools>React Native</Tools>
-                      </CardRightBottom>
-                    </CardRight>
-                  </ExperienceCard>
-                </a>
-                <ViewResume>
-                  <CardHeader>
-                    View Full Résumé
-                    <img src={Arrow} alt="arrow" />
-                  </CardHeader>
-                </ViewResume>
+                  <ViewResume>
+                    <CardHeader>
+                      View Full Résumé
+                      <img src={Arrow} alt="arrow" />
+                    </CardHeader>
+                  </ViewResume>
+                  </a>
+                </MobileContainer>
               </Experience>
 
               <Projects id="projects">
-              <MobileHeader>
-                <MobileHeaderText>PROJECTS</MobileHeaderText>
-              </MobileHeader>
+                <MobileHeader $isSticky={stickyHeader === "projects"}>
+                  <MobileHeaderText>PROJECTS</MobileHeaderText>
+                </MobileHeader>
+
                 <a
-                  href="https://calebali.vercel.app/"
+                  href="https://www.evendy.co/auth/signup"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ textDecoration: "none" }}
@@ -882,13 +1053,52 @@ const App = () => {
                         : "false"
                     }
                   >
-                    <ProjectText1>Rekruit</ProjectText1>
+                    <ProjectText1>Evendy Dashboard</ProjectText1>
                     <ProjectText2>
-                      Javascript <DotImage src={Dot} /> React{" "}
-                      <DotImage src={Dot} /> Tailwind css
+                      <TechItem>Typescript</TechItem>
+                      <TechItem>React</TechItem>
+                      <TechItem>Styled Components</TechItem>
+                      <TechItem>Ant Design</TechItem>
+                      <TechItem>React Query</TechItem>
+                      <TechItem>Recharts</TechItem>
+                      <TechItem>Git</TechItem>
+                      <TechItem>Vite</TechItem>
                     </ProjectText2>
                     <ProjectText3>
-                      A recruitment management platform
+                    Contributed to the development of multiple dashboards, including Organizer, Vendor, and Admin dashboards. Built several key features and collaborated with other engineers to implement, enhance, and debug functionality. Ensured high code quality through adherence to best practices, while also working on optimization, scalability, and continuous improvements to the codebase.
+                    </ProjectText3>
+                    <ProjectText4>
+                      View Project
+                      <img src={Arrow} alt="arrow" />
+                    </ProjectText4>
+                  </ProjectsCard>
+                </a>
+                <a
+                  href="https://www.evendy.co/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <ProjectsCard
+                    onMouseEnter={() => setHoveredCard(1)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    $ishovered={
+                      hoveredCard === null || hoveredCard === 1
+                        ? "true"
+                        : "false"
+                    }
+                  >
+                    <ProjectText1>Evendy Website</ProjectText1>
+                    <ProjectText2>
+                      <TechItem>Typescript</TechItem>
+                      <TechItem>React</TechItem>
+                      <TechItem>Styled Components</TechItem>
+                      <TechItem>Ant Design</TechItem>
+                      <TechItem>Git</TechItem>
+                      <TechItem>Vite</TechItem>
+                    </ProjectText2>
+                    <ProjectText3>
+                    Developed the Evendy website with a focus on clean UI, responsive layout, and intuitive navigation. Translated the brand’s identity into a modern, user-friendly web experience. Collaborated closely with designers to achieve pixel-perfect implementation and optimized performance across all devices.
                     </ProjectText3>
                     <ProjectText4>
                       View Project
@@ -951,9 +1161,9 @@ const App = () => {
                 </a>
               </Projects>
               <Articles id="articles">
-              <MobileHeader>
-                <MobileHeaderText>ARTICLES</MobileHeaderText>
-              </MobileHeader>
+                <MobileHeader $isSticky={stickyHeader === "articles"}>
+                  <MobileHeaderText>ARTICLES</MobileHeaderText>
+                </MobileHeader>
                 <ArticlesColoum1>
                   <a
                     href="https://dev.to/calebali/how-to-build-dynamic-charts-in-react-with-recharts-including-edge-cases-3e72"
@@ -1085,8 +1295,41 @@ const App = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Brittany Chiang.
+                    Brittany Chiang
                   </a>
+                  , Built with{" "}
+                  <a
+                    href="https://react.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    React
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://styled-components.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Styled Components
+                  </a>
+                  , developed in{" "}
+                  <a
+                    href="https://code.visualstudio.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Visual Studio Code
+                  </a>{" "}
+                  and deployed with{" "}
+                  <a
+                    href="https://vercel.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Vercel
+                  </a>
+                  .
                 </ProjectText3>
               </Footer>
             </RightContent>
