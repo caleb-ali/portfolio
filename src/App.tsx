@@ -1107,7 +1107,7 @@ const App = () => {
                   </ProjectsCard>
                 </a>
                 <a
-                  href="https://calebali.vercel.app/"
+                  href="https://calebalidev.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ textDecoration: "none" }}
