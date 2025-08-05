@@ -174,7 +174,7 @@ const SmallText = styled.p`
     color: #ffffff;
     text-decoration: none;
     transition: color 0.3s ease;
-    font-size: 15px;
+    font-size: 18px;
 
     @media (min-width: 1001px) {
       &:hover {
