@@ -205,7 +205,7 @@ const CardText = styled.p`
 `;
 
 const CardText2 = styled.p`
-  font-size: 16px;
+  font-size: 14px;
   color: #949495;
   line-height: 1.5;
   margin: 0;
