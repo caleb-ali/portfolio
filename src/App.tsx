@@ -245,8 +245,9 @@ const Bottom = styled.div`
   align-items: center;
   gap: 2rem;
   @media (min-width: 1001px) {
-    position: fixed;
-    bottom: 6rem;
+    /* position: fixed; */
+    /* bottom: 6rem; */
+    margin-top: 8rem;
   }
   @media (max-width: 1000px) {
     position: static; // Normal flow on mobile
