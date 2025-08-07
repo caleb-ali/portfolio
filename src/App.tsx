@@ -247,7 +247,7 @@ const Bottom = styled.div`
   @media (min-width: 1001px) {
     /* position: fixed; */
     /* bottom: 6rem; */
-    margin-top: 4rem;
+    margin-top: 3rem;
   }
   @media (max-width: 1000px) {
     position: static; // Normal flow on mobile
