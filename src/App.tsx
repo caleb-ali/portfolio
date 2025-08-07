@@ -165,7 +165,7 @@ const MobileContainer = styled.div`
 `;
 
 const SmallText = styled.p`
-  font-size: 18px;
+  font-size: 16px;
   color: #949495;
   line-height: 1.5;
   margin: 0;
@@ -174,7 +174,7 @@ const SmallText = styled.p`
     color: #ffffff;
     text-decoration: none;
     transition: color 0.3s ease;
-    font-size: 18px;
+    font-size: 16px;
 
     @media (min-width: 1001px) {
       &:hover {
