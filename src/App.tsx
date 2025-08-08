@@ -73,7 +73,7 @@ const Container = styled.div`
 `;
 
 const Left = styled.div`
-  width: 45%;
+  width: 50%;
   background-color: #151515;
   position: fixed;
 
@@ -87,25 +87,28 @@ const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  margin: 1rem;
+ 
 
   @media (min-width: 1000px) {
-    margin: 2rem;
+    margin-top: 2rem;
+    margin-left: 2rem;
   }
   @media (min-width: 1240px) {
-    margin: 6rem;
+    margin-top: 6rem;
+    margin-left: 6rem;
   }
   @media (max-width: 1000px) {
     padding-bottom: 2rem;
     gap: 2rem;
+    margin: 1rem;
   }
 `;
 
 const Right = styled.div`
-  width: 55%;
+  width: 50%;
   background-color: #151515;
   position: relative;
-  margin-left: 45%;
+  margin-left: 50%;
 
   @media (max-width: 1000px) {
     width: 100%;
@@ -118,19 +121,22 @@ const RightContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6rem;
-  margin: 6rem;
   position: relative;
+ 
+
+  @media (min-width: 1000px) {
+    margin-top: 2rem;
+    margin-right: 2rem;
+  }
+  @media (min-width: 1240px) {
+    margin-top: 6rem;
+    margin-right: 6rem;
+
+  }
 
   @media (max-width: 1000px) {
     margin: 0rem;
     gap: 2rem;
-  }
-
-  @media (min-width: 1000px) {
-    margin: 2rem;
-  }
-  @media (min-width: 1240px) {
-    margin: 6rem;
   }
 `;
 
@@ -161,7 +167,20 @@ const MobileHeaderText = styled.p`
 `;
 
 const MobileContainer = styled.div`
-  margin: 1rem;
+ @media (max-width: 1000px) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+`;
+
+const MobileContainerExperience = styled.div`
+display: flex;
+flex-direction: column;
+gap: 2rem;
+ @media (max-width: 1000px) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 `;
 
 const SmallText = styled.p`
@@ -244,16 +263,8 @@ const Bottom = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 2rem;
-  @media (min-width: 1001px) {
-    /* position: fixed; */
-    /* bottom: 6rem; */
-    margin-top: 3rem;
-  }
-  @media (max-width: 1000px) {
-    position: static; // Normal flow on mobile
-  }
   @media (max-width: 450px) {
-    gap: 0.5rem;
+    gap: 1rem;
   }
 `;
 
@@ -273,7 +284,7 @@ const StyledSVG = styled.img`
 const ProfilePic = styled.div``;
 
 const About = styled.div`
-  /* scroll-margin-top: 100px; */
+ 
 `;
 
 const Articles = styled.div`
@@ -312,14 +323,14 @@ const ArticlesTop = styled.div``;
 const ArticlesBottom = styled.div``;
 
 const Experience = styled.div`
-  /* margin-top: 5rem; */
+
 `;
 
 const Projects = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  /* margin-top: 5rem; */
+ 
 `;
 
 const ProjectText1 = styled.p`
@@ -345,7 +356,7 @@ const ProjectText2 = styled.p`
 const TechItem = styled.span`
   display: inline-flex;
   align-items: center;
-  /* margin-right: 0.25rem; */
+  
 
   &:not(:last-child)::after {
     content: "";
@@ -379,6 +390,7 @@ const ProjectText3 = styled.p`
 `;
 
 const ProjectText4 = styled.p`
+  margin: 0;
   font-size: 14px;
   display: flex;
   flex-direction: row;
@@ -392,12 +404,10 @@ const ProjectText4 = styled.p`
 `;
 
 const ArticlesCard = styled.div<ArticleCardProps>`
-  width: calc(50%-0.5rem);
   display: flex;
   flex-direction: column;
   gap: 5rem;
-  padding: 1rem 2rem;
-
+  padding: 2rem 2rem;
   background-color: #202022;
   color: #ffffff;
 
@@ -426,13 +436,16 @@ const ProjectsCard = styled.div<ProjectsCardProps>`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem 2rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  padding: 2rem 2rem;
   color: #ffffff;
   background-color: #202022;
   transition: all 0.3s ease;
   transform-origin: center;
+
+  @media (max-width: 1000px) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 
   @media (min-width: 1001px) {
     opacity: ${(props) =>
@@ -459,9 +472,6 @@ const ExperienceCard = styled.div`
   display: flex;
   flex-direction: row;
   gap: 2rem;
-  margin-bottom: 1rem;
-  padding: 1rem 2rem;
-  margin-left: -2rem;
   color: #ffffff;
   transition: all 0.3s ease;
   transform-origin: center;
@@ -472,11 +482,13 @@ const ExperienceCard = styled.div`
   }
 
   @media (min-width: 1001px) {
+    padding: 1rem;
+    margin-left: -1rem;
     &:hover {
       background-color: #202022;
       transform: scale(1.05);
+      
       cursor: pointer;
-
       ${CardHeader} {
         color: ${orangePalette.secondary};
 
@@ -548,7 +560,6 @@ const CardRightBottom = styled.div`
 
 // Then update these components:
 const LargeText = styled.h1`
-  line-height: 1.25;
   font-weight: 700;
   font-size: 60px;
   margin: 0;
@@ -563,7 +574,6 @@ const OrangeText = styled.span`
 `;
 
 const LargeText2 = styled.h1`
-  line-height: 1.25;
   font-weight: 600;
   font-size: 22px;
   margin: 0;
@@ -645,7 +655,7 @@ const SocialLink = styled.div`
   a {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.2rem;
     text-decoration: none;
     color: #ffffff;
     transition: all 0.3s ease;
@@ -666,7 +676,6 @@ const SocialLink = styled.div`
   }
 `;
 
-
 const DotImage = styled.img`
   width: 14px;
   height: 14px;
@@ -674,13 +683,11 @@ const DotImage = styled.img`
 `;
 
 const Footer = styled.div`
-  
-  margin-bottom: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
-
-  @media (max-width: 1240px) {
+  margin-bottom: 9.5rem;
+  @media (max-width: 1001px) {
     margin-bottom: 5.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 `;
 
@@ -749,7 +756,7 @@ const App = () => {
 
   useEffect(() => {
     document.fonts.ready.then(() => {
-      console.log('All fonts loaded');
+      console.log("All fonts loaded");
     });
   }, []);
 
@@ -911,17 +918,20 @@ const App = () => {
                     thoughtful design meets functional execution.
                     <br />
                     <br />
-                    Currently, I’m a Frontend Developer at   <a
-                    href="https://www.evendy.co/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >Evendy</a>, where I focus
-                    on building and maintaining a role-based access control
-                    dashboard and vendor marketplace. I work on crafting
-                    responsive and secure user interfaces that ensure seamless
-                    experiences across devices, while collaborating closely with
-                    backend teams to integrate frontend logic and maintain
-                    efficient user sessions.
+                    Currently, I’m a Frontend Developer at{" "}
+                    <a
+                      href="https://www.evendy.co/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Evendy
+                    </a>
+                    , where I focus on building and maintaining a role-based
+                    access control dashboard and vendor marketplace. I work on
+                    crafting responsive and secure user interfaces that ensure
+                    seamless experiences across devices, while collaborating
+                    closely with backend teams to integrate frontend logic and
+                    maintain efficient user sessions.
                     <br />
                     <br />
                     In my spare time, I’m usually learning something new,
@@ -935,14 +945,14 @@ const App = () => {
                   <MobileHeaderText>EXPERIENCE</MobileHeaderText>
                 </MobileHeader>
 
-                <MobileContainer>
+                <MobileContainerExperience>
                   <a
                     href="https://www.evendy.co/"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ textDecoration: "none" }}
                   >
-                    <ExperienceCard >
+                    <ExperienceCard>
                       <CardLeft>
                         <CardText>2024 - PRESENT</CardText>
                       </CardLeft>
@@ -1017,19 +1027,19 @@ const App = () => {
                     </ExperienceCard>
                   </a>
                   <a
-                  href="https://drive.google.com/file/d/166GwnSei38Aj7740jTbuGCWLP0TnF8Ol/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
-                >
-                  <ViewResume>
-                    <CardHeader>
-                      View Full Résumé
-                      <img src={Arrow} alt="arrow" />
-                    </CardHeader>
-                  </ViewResume>
+                    href="https://drive.google.com/file/d/166GwnSei38Aj7740jTbuGCWLP0TnF8Ol/view?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <ViewResume>
+                      <CardHeader>
+                        View Full Résumé
+                        <img src={Arrow} alt="arrow" />
+                      </CardHeader>
+                    </ViewResume>
                   </a>
-                </MobileContainer>
+                </MobileContainerExperience>
               </Experience>
 
               <Projects id="projects">
@@ -1064,7 +1074,13 @@ const App = () => {
                       <TechItem>Vite</TechItem>
                     </ProjectText2>
                     <ProjectText3>
-                    Contributed to the development of multiple dashboards, including Organizer, Vendor, and Admin dashboards. Built several key features and collaborated with other engineers to implement, enhance, and debug functionality. Ensured high code quality through adherence to best practices, while also working on optimization, scalability, and continuous improvements to the codebase.
+                      Contributed to the development of multiple dashboards,
+                      including Organizer, Vendor, and Admin dashboards. Built
+                      several key features and collaborated with other engineers
+                      to implement, enhance, and debug functionality. Ensured
+                      high code quality through adherence to best practices,
+                      while also working on optimization, scalability, and
+                      continuous improvements to the codebase.
                     </ProjectText3>
                     <ProjectText4>
                       View Project
@@ -1097,7 +1113,12 @@ const App = () => {
                       <TechItem>Vite</TechItem>
                     </ProjectText2>
                     <ProjectText3>
-                    Developed the Evendy website with a focus on clean UI, responsive layout, and intuitive navigation. Translated the brand’s identity into a modern, user-friendly web experience. Collaborated closely with designers to achieve pixel-perfect implementation and optimized performance across all devices.
+                      Developed the Evendy website with a focus on clean UI,
+                      responsive layout, and intuitive navigation. Translated
+                      the brand’s identity into a modern, user-friendly web
+                      experience. Collaborated closely with designers to achieve
+                      pixel-perfect implementation and optimized performance
+                      across all devices.
                     </ProjectText3>
                     <ProjectText4>
                       View Project
@@ -1340,4 +1361,3 @@ const App = () => {
 };
 
 export default App;
-
