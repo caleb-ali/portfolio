@@ -83,69 +83,27 @@ const Left = styled.div`
   }
 `;
 
-// const LeftContent = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-between;
-//   gap: 4rem;
-
-//   @media (min-width: 1000px) {
-//     margin-top: 2rem;
-//     margin-left: 2rem;
-//   }
-//   @media (min-width: 1240px) {
-//     margin-top: 5rem;
-//     margin-left: 7rem;
-//   }
-//   @media (max-width: 1000px) {
-//     padding-bottom: 2rem;
-//     gap: 2rem;
-//     margin-left: 1rem;
-//     margin-right: 1rem;
-//     margin-top: 2rem;
-//   }
-// `;
-
 const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100vh - 8rem); // Subtract top and bottom margins
- 
+  gap: 4rem;
 
   @media (min-width: 1000px) {
     margin-top: 2rem;
     margin-left: 2rem;
-   
   }
   @media (min-width: 1240px) {
     margin-top: 5rem;
     margin-left: 7rem;
-    margin-bottom: 5rem;
-   
   }
   @media (max-width: 1000px) {
-    height: auto; // Reset height for mobile
     padding-bottom: 2rem;
     gap: 2rem;
+    margin: 1rem;
     
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-top: 2rem;
   }
 `;
-
-const LeftContainer1 = styled.div`
- display: flex;
- flex-direction: column;
-
-`;
-
-const LeftContainer2 = styled.div`
- 
-`;
-
-
 
 const Right = styled.div`
   width: 50%;
@@ -165,7 +123,7 @@ const RightContent = styled.div`
   flex-direction: column;
   gap: 6rem;
   position: relative;
- 
+
   @media (min-width: 1000px) {
     margin-top: 2rem;
     margin-right: 2rem;
@@ -174,7 +132,7 @@ const RightContent = styled.div`
   @media (min-width: 1240px) {
     margin-top: 5rem;
     margin-right: 7rem;
-    margin-bottom: 5rem;
+    margin-bottom: 6rem;
   }
 
   @media (max-width: 1000px) {
@@ -291,7 +249,6 @@ const Top = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-bottom: 4rem;
 `;
 
 const Middle = styled.div`
@@ -725,7 +682,7 @@ const Footer = styled.div`
   /* margin-bottom: 4.5rem; */
 
   @media (max-width: 1001px) {
-   
+    /* margin-bottom: 3rem; */
     margin-left: 1rem;
     margin-right: 1rem;
   }
@@ -862,7 +819,6 @@ const App = () => {
         <Container>
           <Left>
             <LeftContent>
-<LeftContainer1>
               <Top>
                 <Header>
                   <LargeText>
@@ -902,8 +858,6 @@ const App = () => {
                   <SmallTextBold>ARTICLES</SmallTextBold>
                 </Section>
               </Middle>
-              </LeftContainer1>
-              <LeftContainer2>
               <Bottom>
                 <ProfilePic>
                   <Profile src={profilePicture} />
@@ -939,7 +893,6 @@ const App = () => {
                   </a>
                 </SocialLink>
               </Bottom>
-              </LeftContainer2>
             </LeftContent>
           </Left>
           <Right>
