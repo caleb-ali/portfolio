@@ -83,26 +83,69 @@ const Left = styled.div`
   }
 `;
 
+// const LeftContent = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   gap: 4rem;
+
+//   @media (min-width: 1000px) {
+//     margin-top: 2rem;
+//     margin-left: 2rem;
+//   }
+//   @media (min-width: 1240px) {
+//     margin-top: 5rem;
+//     margin-left: 7rem;
+//   }
+//   @media (max-width: 1000px) {
+//     padding-bottom: 2rem;
+//     gap: 2rem;
+//     margin-left: 1rem;
+//     margin-right: 1rem;
+//     margin-top: 2rem;
+//   }
+// `;
+
 const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  justify-content: space-between;
+  height: calc(100vh - 8rem); // Subtract top and bottom margins
  
 
   @media (min-width: 1000px) {
     margin-top: 2rem;
     margin-left: 2rem;
+   
   }
   @media (min-width: 1240px) {
-    margin-top: 6rem;
-    margin-left: 6rem;
+    margin-top: 5rem;
+    margin-left: 7rem;
+    margin-bottom: 5rem;
+   
   }
   @media (max-width: 1000px) {
+    height: auto; // Reset height for mobile
     padding-bottom: 2rem;
     gap: 2rem;
-    margin: 1rem;
+    
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 2rem;
   }
 `;
+
+const LeftContainer1 = styled.div`
+ display: flex;
+ flex-direction: column;
+
+`;
+
+const LeftContainer2 = styled.div`
+ 
+`;
+
+
 
 const Right = styled.div`
   width: 50%;
@@ -123,20 +166,21 @@ const RightContent = styled.div`
   gap: 6rem;
   position: relative;
  
-
   @media (min-width: 1000px) {
     margin-top: 2rem;
     margin-right: 2rem;
+    margin-bottom: 2rem;
   }
   @media (min-width: 1240px) {
-    margin-top: 6rem;
-    margin-right: 6rem;
-
+    margin-top: 5rem;
+    margin-right: 7rem;
+    margin-bottom: 5rem;
   }
 
   @media (max-width: 1000px) {
     margin: 0rem;
     gap: 2rem;
+    margin-bottom: 2rem;
   }
 `;
 
@@ -167,17 +211,17 @@ const MobileHeaderText = styled.p`
 `;
 
 const MobileContainer = styled.div`
- @media (max-width: 1000px) {
+  @media (max-width: 1000px) {
     margin-left: 1rem;
     margin-right: 1rem;
   }
 `;
 
 const MobileContainerExperience = styled.div`
-display: flex;
-flex-direction: column;
-gap: 2rem;
- @media (max-width: 1000px) {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  @media (max-width: 1000px) {
     margin-left: 1rem;
     margin-right: 1rem;
   }
@@ -247,6 +291,7 @@ const Top = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-bottom: 4rem;
 `;
 
 const Middle = styled.div`
@@ -283,9 +328,7 @@ const StyledSVG = styled.img`
 
 const ProfilePic = styled.div``;
 
-const About = styled.div`
- 
-`;
+const About = styled.div``;
 
 const Articles = styled.div`
   display: flex;
@@ -322,15 +365,12 @@ const ArticlesTop = styled.div``;
 
 const ArticlesBottom = styled.div``;
 
-const Experience = styled.div`
-
-`;
+const Experience = styled.div``;
 
 const Projects = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
- 
 `;
 
 const ProjectText1 = styled.p`
@@ -356,7 +396,6 @@ const ProjectText2 = styled.p`
 const TechItem = styled.span`
   display: inline-flex;
   align-items: center;
-  
 
   &:not(:last-child)::after {
     content: "";
@@ -379,7 +418,7 @@ const ProjectText3 = styled.p`
     color: #ffffff;
     text-decoration: none;
     transition: color 0.3s ease;
-    font-size: 15px;
+    font-size: 14px;
 
     @media (min-width: 1001px) {
       &:hover {
@@ -487,7 +526,7 @@ const ExperienceCard = styled.div`
     &:hover {
       background-color: #202022;
       transform: scale(1.05);
-      
+
       cursor: pointer;
       ${CardHeader} {
         color: ${orangePalette.secondary};
@@ -683,9 +722,10 @@ const DotImage = styled.img`
 `;
 
 const Footer = styled.div`
-  margin-bottom: 9.5rem;
+  /* margin-bottom: 4.5rem; */
+
   @media (max-width: 1001px) {
-    margin-bottom: 5.5rem;
+   
     margin-left: 1rem;
     margin-right: 1rem;
   }
@@ -822,6 +862,7 @@ const App = () => {
         <Container>
           <Left>
             <LeftContent>
+<LeftContainer1>
               <Top>
                 <Header>
                   <LargeText>
@@ -861,6 +902,8 @@ const App = () => {
                   <SmallTextBold>ARTICLES</SmallTextBold>
                 </Section>
               </Middle>
+              </LeftContainer1>
+              <LeftContainer2>
               <Bottom>
                 <ProfilePic>
                   <Profile src={profilePicture} />
@@ -896,6 +939,7 @@ const App = () => {
                   </a>
                 </SocialLink>
               </Bottom>
+              </LeftContainer2>
             </LeftContent>
           </Left>
           <Right>
