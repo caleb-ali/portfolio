@@ -7,6 +7,7 @@ import Envelope from "./images/envelope-solid.svg";
 import Dot from "./images/dot.png";
 import Arrow from "./images/right-up.png";
 import MouseEffect from "./components/MouseEffect";
+import { Analytics } from '@vercel/analytics/react';
 
 // Global styles to remove default margins
 const GlobalStyle = createGlobalStyle`
@@ -1353,6 +1354,8 @@ const App = () => {
           </Right>
         </Container>
       </AppContainer>
+      <Analytics />
+
     </>
   );
 };
