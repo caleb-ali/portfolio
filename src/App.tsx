@@ -7,7 +7,8 @@ import Envelope from "./images/envelope-solid.svg";
 import Dot from "./images/dot.png";
 import Arrow from "./images/right-up.png";
 import MouseEffect from "./components/MouseEffect";
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // Global styles to remove default margins
 const GlobalStyle = createGlobalStyle`
@@ -102,7 +103,6 @@ const LeftContent = styled.div`
     padding-bottom: 2rem;
     gap: 2rem;
     margin: 1rem;
-    
   }
 `;
 
@@ -814,6 +814,7 @@ const App = () => {
 
   return (
     <>
+      <SpeedInsights />
       <GlobalStyle />
       <MouseEffect />
       <AppContainer>
@@ -1355,7 +1356,6 @@ const App = () => {
         </Container>
       </AppContainer>
       <Analytics />
-
     </>
   );
 };
